@@ -31,14 +31,12 @@ void Map::recover(int &x1, int &y1, int &x2, int &y2, int tmp_x1, int tmp_y1,
 bool Map::isLineLinkable(int x1, int y1, int x2, int y2) {
 	if (x1 == x2) {
 		if (y1 > y2) std::swap(y1, y2);
-
 		for (y1 += 1; y1 < y2; ++y1)
 			if (map[x1][y1]) return false;
 
 	}
 	else if (y1 == y2) {
 		if (x1 > x2) std::swap(x1, x2);
-
 		for (x1 += 1; x1 < x2; ++x1)
 			if (map[x1][y1]) return false;
 	}
@@ -116,7 +114,6 @@ vector<vector<int>> Map::makeMap() {
 
 vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 	vector<vector<int>> route;
-	bool flag = false;
 	int tmp_x1 = x1;
 	int tmp_x2 = x2;
 	int tmp_y1 = y1;
@@ -138,68 +135,108 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 		return route;
 	}
 	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
-	if (y1 > y2) {
-		swap(x1, x2);
-		swap(y1, y2);
-	}
 	for (int i = 0; i < HEIGHT; i++)
 		if (!map[i][y1] && isLineLinkable(i, y1, x1, y1)) {
-			if (!map[i][y2] && isLineLinkable(i, y2, x2, y2)) {
+			if (!map[i][y2] && isLineLinkable(i, y2, x2, y2) &&
+				isLineLinkable(i, y1, i, y2)) {
 				if (i >= x1) {
-					flag = true;
 					for (x1; x1 <= i; x1++) route.push_back({ x1, y1 });
-					for (y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+					x1--;
 				}
 				else {
 					for (x1; x1 >= i; x1--) route.push_back({ x1, y1 });
-					for (y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
-				}
-				y1--;
-				if (flag)
-					x1--;
-				else
 					x1++;
+				}
+				if (y1 > y2) {
+					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
+					y1++;
+				}
+				else {
+					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+					y1--;
+				}
 				if (x1 > x2)
-					for (x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
 				else
-					for (x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
+					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
 				map[tmp_x1][tmp_y1] = 0;
 				map[tmp_x2][tmp_y2] = 0;
 				return route;
 			}
 		}
 	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
-	flag = false;
-	if (x1 < x2) {
-		swap(x1, x2);
-		swap(y1, y2);
-	}
-	for (int i = 0; i < WIDTH; i++) {
+	for (int i = 0; i < WIDTH; i++)
 		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
-			if (!map[x2][i] && isLineLinkable(x2, i, x2, y2)) {
+			if (!map[x2][i] && isLineLinkable(x2, i, x2, y2) &&
+				isLineLinkable(x1, i, x2, i)) {
 				if (i >= y1) {
-					flag = true;
 					for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
-					for (x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+					y1--;
 				}
 				else {
 					for (y1; y1 >= i; y1--) route.push_back({ x1, y1 });
-					for (x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
-				}
-				x1++;
-				if (flag)
-					y1--;
-				else
 					y1++;
+				}
+				if (x1 < x2) {
+					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
+					x1--;
+				}
+				else {
+					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+					x1++;
+				}
 				if (y1 > y2)
-					for (y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
+					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
 				else
-					for (y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
 				map[tmp_x1][tmp_y1] = 0;
 				map[tmp_x2][tmp_y2] = 0;
 				return route;
 			}
 		}
-	}
-	return route;
+		recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
+		for (int i = 0; i < WIDTH; i++) {
+			if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
+				if (isLineLinkable(x1, i, x2, i)) {
+					if (i >= y1) {
+						for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
+						y1--;
+					}
+					else {
+						for (y1; y1 >= i; y1--) route.push_back({ x1, y1 });
+						y1++;
+					}
+					if (x1 < x2)
+						for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
+					else
+						for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+					map[tmp_x1][tmp_y1] = 0;
+					map[tmp_x2][tmp_y2] = 0;
+					return route;
+				}
+			}
+		}
+		recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
+		for (int i = 0; i < HEIGHT; i++) {
+			if (!map[i][y1] && isLineLinkable(i, y1, x1, y1)) {
+				if (isLineLinkable(i, y1, x2, y2)) {
+					if (i >= x1) {
+						for (x1; x1 <= i; x1++) route.push_back({ x1, y1 });
+						x1--;
+					}
+					else {
+						for (x1; x1 >= i; x1--) route.push_back({ x1, y1 });
+						x1++;
+					}
+					if (y1 < y2)
+						for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+					else
+						for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
+					map[tmp_x1][tmp_y1] = 0;
+					map[tmp_x2][tmp_y2] = 0;
+					return route;
+				}
+			}
+		}
+		return route;
 }
