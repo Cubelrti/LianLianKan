@@ -9,6 +9,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	ui.graphicsView->installEventFilter(this);
 	scene->setSceneRect(0, 0, 791, 571);
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(startGame()));
+	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
 	{
@@ -35,6 +36,22 @@ void LianLianKan::startGame() {
 	scene->clear();
 	lightningSequence.clear();
 	drawBlocks();
+}
+
+void LianLianKan::resortGame() {
+	prev = nullptr;
+	scene->clear();
+	lightningSequence.clear();
+	auto mapVec = map.rearrange();
+	for (int i = 17; i >= 0; i--)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			if (mapVec[j][i] == 0) continue;
+			Block *_block = new Block(this, mapVec[j][i] - 1, i, j);
+			scene->addItem(_block);
+		}
+	}
 }
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
@@ -82,6 +99,9 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 				else 
 					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
 			}
+			else if (prev == LU) {
+				lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+			}
 		}
 		else if (prevx > nextx && prevy > nexty || prevx < nextx && prevy < nexty) {
 			// ×óÉÏÓÒÏÂÐÍ
@@ -96,6 +116,9 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
 				else
 					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+			}
+			else if (prev == LU) {
+				lightningSequence.push_back(new Lightning(this, RD, currx, curry));
 			}
 		}
 		prevx = currx;

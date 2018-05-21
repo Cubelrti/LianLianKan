@@ -239,7 +239,7 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 	return route;
 }
 
-void Map::rearrange() {
+vector<vector<int>> Map::rearrange() {
 	srand((unsigned)time(NULL));
 	int frequencies[41];
 	vector<vector <int>> position;
@@ -270,7 +270,7 @@ void Map::rearrange() {
 			frequencies[i] -= 2;
 		}
 	}
-
+	return map;
 }
 
 vector<vector<int>> Map::prompt() {

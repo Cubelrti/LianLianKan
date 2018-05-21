@@ -62,6 +62,32 @@ background: transparent;
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="resortButton">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>160</y>
+      <width>31</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton { background: transparent; border: none;} 
+QPushButton:hover { 
+background-image: url(:/LianLianKan/Resort.png);
+background-repeat: no-repeat;
+margin-top: 5px;
+margin-left: -2.7px;
+}
+QPushButton:pressed{
+background: transparent;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

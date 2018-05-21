@@ -15,8 +15,8 @@ public:
 	~Map();
 	vector<vector<int>> connection(int x1, int y1, int x2, int y2);
 	vector<vector<int>> makeMap();
-	void rearrange();
-	void prompt();
+	vector<vector<int>> rearrange();
+	vector<vector<int>> prompt();
 private:
 	bool isLineLinkable(int x1, int y1, int x2, int y2);
 	vector<vector<int>> map;
