@@ -110,7 +110,7 @@ vector<vector<int>> Map::makeMap() {
 	return map;
 }
 
-vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
+vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptFlag) {
 	vector<vector<int>> route;
 	int tmp_x1 = x1;
 	int tmp_x2 = x2;
@@ -120,16 +120,20 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 	if (x1 == x2 && isLineLinkable(x1, y1, x2, y2)) {
 		if (y1 > y2) swap(y1, y2);
 		for (y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
-		map[tmp_x1][tmp_y1] = 0;
-		map[tmp_x2][tmp_y2] = 0;
+		if (!promptFlag) {
+			map[tmp_x1][tmp_y1] = 0;
+			map[tmp_x2][tmp_y2] = 0;
+		}
 		return route;
 	}
 	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	if (y1 == y2 && isLineLinkable(x1, y1, x2, y2)) {
 		if (x1 > x2) swap(x1, x2);
 		for (x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
-		map[tmp_x1][tmp_y1] = 0;
-		map[tmp_x2][tmp_y2] = 0;
+		if (!promptFlag) {
+			map[tmp_x1][tmp_y1] = 0;
+			map[tmp_x2][tmp_y2] = 0;
+		}
 		return route;
 	}
 	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
@@ -157,8 +161,10 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
 				else
 					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
-				map[tmp_x1][tmp_y1] = 0;
-				map[tmp_x2][tmp_y2] = 0;
+				if (!promptFlag) {
+					map[tmp_x1][tmp_y1] = 0;
+					map[tmp_x2][tmp_y2] = 0;
+				}
 				return route;
 			}
 		}
@@ -187,8 +193,10 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
 				else
 					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
-				map[tmp_x1][tmp_y1] = 0;
-				map[tmp_x2][tmp_y2] = 0;
+				if (!promptFlag) {
+					map[tmp_x1][tmp_y1] = 0;
+					map[tmp_x2][tmp_y2] = 0;
+				}
 				return route;
 			}
 		}
@@ -208,8 +216,10 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
 				else
 					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
-				map[tmp_x1][tmp_y1] = 0;
-				map[tmp_x2][tmp_y2] = 0;
+				if (!promptFlag) {
+					map[tmp_x1][tmp_y1] = 0;
+					map[tmp_x2][tmp_y2] = 0;
+				}
 				return route;
 			}
 		}
@@ -230,8 +240,10 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
 				else
 					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
-				map[tmp_x1][tmp_y1] = 0;
-				map[tmp_x2][tmp_y2] = 0;
+				if (!promptFlag) {
+					map[tmp_x1][tmp_y1] = 0;
+					map[tmp_x2][tmp_y2] = 0;
+				}
 				return route;
 			}
 		}
@@ -253,7 +265,7 @@ vector<vector<int>> Map::rearrange() {
 				frequencies[map[i][j]]++;
 			}
 		}
-			
+
 	int len = position.size();
 	for (int i = 1; i < 41; i++) {
 		while (frequencies[i]) {
@@ -274,16 +286,16 @@ vector<vector<int>> Map::rearrange() {
 vector<vector<int>> Map::prompt() {
 	vector<vector <int>> route;
 	vector<vector <int>>position;
-	for (int i = 0; i < HEIGHT; i++)
+	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++)
 			if (map[i][j]) {
 				position.push_back({ map[i][j],i,j });
 			}
-
+	}
 	for (int i = 0; i < position.size(); i++) {
 		for (int j = i + 1; j < position.size(); j++)
 			if (position[i][0] == position[j][0]) {
-				route = connection(position[i][1], position[i][2], position[j][1], position[j][2]);
+				route = connection(position[i][1], position[i][2], position[j][1], position[j][2], true);
 				if (route.size())
 					return route;
 			}

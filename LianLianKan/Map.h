@@ -13,7 +13,7 @@ class Map
 public:
 	Map();
 	~Map();
-	vector<vector<int>> connection(int x1, int y1, int x2, int y2);
+	vector<vector<int>> connection(int x1, int y1, int x2, int y2, bool promptFlag = false);
 	vector<vector<int>> makeMap();
 	vector<vector<int>> rearrange();
 	vector<vector<int>> prompt();
