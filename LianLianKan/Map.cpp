@@ -245,19 +245,17 @@ vector<vector<int>> Map::rearrange() {
 	vector<vector <int>> position;
 	vector<bool> flags;
 	memset(frequencies, 0, sizeof(frequencies));
-	for (auto elements : map)
-		for (auto element : elements)
-			if (element)
-				frequencies[element]++;
 	for (int i = 0; i < HEIGHT; i++)
 		for (int j = 0; j < WIDTH; j++) {
 			if (map[i][j]) {
 				position.push_back({ i,j });
 				flags.push_back(false);
+				frequencies[map[i][j]]++;
 			}
 		}
+			
 	int len = position.size();
-	for (int i = 0; i < 41; i++) {
+	for (int i = 1; i < 41; i++) {
 		while (frequencies[i]) {
 			int element1 = rand() % len;
 			while (flags[element1]) element1 = rand() % len;
@@ -265,8 +263,8 @@ vector<vector<int>> Map::rearrange() {
 			while (element2 == element1 || flags[element2]) element2 = rand() % len;
 			flags[element1] = true;
 			flags[element2] = true;
-			map[position[element1][0]][position[element1][1]] = frequencies[i];
-			map[position[element2][0]][position[element2][1]] = frequencies[i];
+			map[position[element1][0]][position[element1][1]] = i;
+			map[position[element2][0]][position[element2][1]] = i;
 			frequencies[i] -= 2;
 		}
 	}
@@ -281,9 +279,9 @@ vector<vector<int>> Map::prompt() {
 			if (map[i][j]) {
 				position.push_back({ map[i][j],i,j });
 			}
-				
+
 	for (int i = 0; i < position.size(); i++) {
-		for (int j = i + 1; j < position.size(); j++) 
+		for (int j = i + 1; j < position.size(); j++)
 			if (position[i][0] == position[j][0]) {
 				route = connection(position[i][1], position[i][2], position[j][1], position[j][2]);
 				if (route.size())
