@@ -13,7 +13,6 @@ Map::~Map() {
 
 }
 
-
 bool Map::full_true(vector<bool> flags) {
 	for (auto flag : flags)
 		if (!flag) return false;
@@ -56,7 +55,6 @@ vector<vector<int>> Map::makeMap() {
 	int order = 0;
 	order = 1 + (rand() % 16);
 	string filename = "./Maps/Map" + std::to_string(order) + ".txt";
-	// string filename = "./Maps/Map3.txt";
 	fstream readMap;
 	readMap.open(filename.c_str());
 	int row = 0;
@@ -194,49 +192,103 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 				return route;
 			}
 		}
-		recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
-		for (int i = 0; i < WIDTH; i++) {
-			if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
-				if (isLineLinkable(x1, i, x2, i)) {
-					if (i >= y1) {
-						for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
-						y1--;
-					}
-					else {
-						for (y1; y1 >= i; y1--) route.push_back({ x1, y1 });
-						y1++;
-					}
-					if (x1 < x2)
-						for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
-					else
-						for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
-					map[tmp_x1][tmp_y1] = 0;
-					map[tmp_x2][tmp_y2] = 0;
-					return route;
+	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
+	for (int i = 0; i < WIDTH; i++) {
+		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
+			if (isLineLinkable(x1, i, x2, y2)) {
+				if (i >= y1) {
+					for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
+					y1--;
 				}
+				else {
+					for (y1; y1 >= i; y1--) route.push_back({ x1, y1 });
+					y1++;
+				}
+				if (x1 < x2)
+					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
+				else
+					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+				map[tmp_x1][tmp_y1] = 0;
+				map[tmp_x2][tmp_y2] = 0;
+				return route;
 			}
 		}
-		recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
-		for (int i = 0; i < HEIGHT; i++) {
-			if (!map[i][y1] && isLineLinkable(i, y1, x1, y1)) {
-				if (isLineLinkable(i, y1, x2, y2)) {
-					if (i >= x1) {
-						for (x1; x1 <= i; x1++) route.push_back({ x1, y1 });
-						x1--;
-					}
-					else {
-						for (x1; x1 >= i; x1--) route.push_back({ x1, y1 });
-						x1++;
-					}
-					if (y1 < y2)
-						for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
-					else
-						for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
-					map[tmp_x1][tmp_y1] = 0;
-					map[tmp_x2][tmp_y2] = 0;
-					return route;
+	}
+	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
+	for (int i = 0; i < HEIGHT; i++) {
+		if (!map[i][y1] && isLineLinkable(i, y1, x1, y1)) {
+			if (isLineLinkable(i, y1, x2, y2)) {
+				if (i >= x1) {
+					for (x1; x1 <= i; x1++) route.push_back({ x1, y1 });
+					x1--;
 				}
+				else {
+					for (x1; x1 >= i; x1--) route.push_back({ x1, y1 });
+					x1++;
+				}
+				if (y1 < y2)
+					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+				else
+					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
+				map[tmp_x1][tmp_y1] = 0;
+				map[tmp_x2][tmp_y2] = 0;
+				return route;
 			}
 		}
-		return route;
+	}
+	return route;
+}
+
+void Map::rearrange() {
+	srand((unsigned)time(NULL));
+	int frequencies[41];
+	vector<vector <int>> position;
+	vector<bool> flags;
+	memset(frequencies, 0, sizeof(frequencies));
+	for (auto elements : map)
+		for (auto element : elements)
+			if (element)
+				frequencies[element]++;
+	for (int i = 0; i < HEIGHT; i++)
+		for (int j = 0; j < WIDTH; j++) {
+			if (map[i][j]) {
+				position.push_back({ i,j });
+				flags.push_back(false);
+			}
+		}
+	int len = position.size();
+	for (int i = 0; i < 41; i++) {
+		while (frequencies[i]) {
+			int element1 = rand() % len;
+			while (flags[element1]) element1 = rand() % len;
+			int element2 = rand() % len;
+			while (element2 == element1 || flags[element2]) element2 = rand() % len;
+			flags[element1] = true;
+			flags[element2] = true;
+			map[position[element1][0]][position[element1][1]] = frequencies[i];
+			map[position[element2][0]][position[element2][1]] = frequencies[i];
+			frequencies[i] -= 2;
+		}
+	}
+
+}
+
+vector<vector<int>> Map::prompt() {
+	vector<vector <int>> route;
+	vector<vector <int>>position;
+	for (int i = 0; i < HEIGHT; i++)
+		for (int j = 0; j < WIDTH; j++)
+			if (map[i][j]) {
+				position.push_back({ map[i][j],i,j });
+			}
+				
+	for (int i = 0; i < position.size(); i++) {
+		for (int j = i + 1; j < position.size(); j++) 
+			if (position[i][0] == position[j][0]) {
+				route = connection(position[i][1], position[i][2], position[j][1], position[j][2]);
+				if (route.size())
+					return route;
+			}
+	}
+	return route;
 }
