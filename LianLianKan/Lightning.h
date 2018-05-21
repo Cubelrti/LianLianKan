@@ -23,9 +23,9 @@ class Lightning : public QObject, public QGraphicsPixmapItem
 
 public:
 	Lightning(QObject *parent, DIRECTION direction, int x, int y);
+	DIRECTION direction;
 	~Lightning();
 private:
-	DIRECTION direction;
 	void startAnimate();
 	QTimer timer;
 	QSequentialAnimationGroup animation;

@@ -41,7 +41,17 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 	lightningSequence.clear();
 	int prevx = seq[0][1], prevy = seq[0][0];
 	int u, v;
-	DIRECTION prev, next;
+	DIRECTION prev;
+	int prev_delta = 0;
+	// prev maintaince
+	if (prevx == seq[1][1]) {
+		prev = UD;
+		prev_delta = prevy - seq[1][0];
+	}
+	if (prevy == seq[1][0]) {
+		prev = LR;
+		prev_delta = prevx - seq[1][1];
+	}
 	if (seq.size() == 2) return;
 	for (int i = 1; i < seq.size() - 1; i++)
 	{
@@ -49,22 +59,44 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 		int nextx = seq[i + 1][1], nexty = seq[i + 1][0];
 		// DETERMINE BY PREV1 AND NEXT1
 		if (prevx == nextx) {
+			prev = UD;
+			prev_delta = curry - nexty;
 			lightningSequence.push_back(new Lightning(this, UD, currx, curry));
 		}
 		else if (prevy == nexty) {
+			prev = LR;
+			prev_delta = currx - nextx;
 			lightningSequence.push_back(new Lightning(this, LR, currx, curry));
 		}
-		else if (prevx < nextx && prevy < nexty) {
-			lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+		else if (prevx < nextx && prevy > nexty || prevx > nextx && prevy < nexty) {
+			// 左下右上型
+			if (prev == UD || prev == RD) {
+				if (prev_delta == 1)
+					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
+				else 
+					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+			}
+			else if(prev == LR || prev == LD) {
+				if (prev_delta == 1)
+					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
+				else 
+					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+			}
 		}
-		else if (prevx > nextx && prevy < nexty) {
-			lightningSequence.push_back(new Lightning(this, LD, currx, curry));
-		}
-		else if (prevx < nextx && prevy > nexty) {
-			lightningSequence.push_back(new Lightning(this, LU, currx, curry));
-		}
-		else if (prevx > nextx && prevy > nexty) {
-			lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+		else if (prevx > nextx && prevy > nexty || prevx < nextx && prevy < nexty) {
+			// 左上右下型
+			if (prev == UD || prev == RD) {
+				if (prev_delta == 1)
+					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+				else
+					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+			}
+			else if (prev == LR || prev == LD) {
+				if (prev_delta == 1)
+					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+				else
+					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+			}
 		}
 		prevx = currx;
 		prevy = curry;
