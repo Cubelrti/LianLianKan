@@ -6,8 +6,8 @@ BoomEffect::BoomEffect(QObject *parent, int x, int y, std::vector<QPixmap> &pixm
 	: QObject(parent), pixmap(pixmapSource)
 {
 
-	const int X_OFFSET = 0;
-	const int Y_OFFSET = 138;
+	const int X_OFFSET = 21;
+	const int Y_OFFSET = 158;
 	const int X_PER_BLOCK = 30;
 	const int Y_PER_BLOCK = 35;
 	setPos(X_OFFSET + X_PER_BLOCK * x, Y_OFFSET + Y_PER_BLOCK * y);

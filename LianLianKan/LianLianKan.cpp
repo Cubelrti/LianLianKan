@@ -58,10 +58,23 @@ void LianLianKan::resortGame() {
 
 void LianLianKan::navigate() {
 	auto navigator = map.prompt();
+	if (navigator.size() == 2) {
+		for (auto item : scene->items()) {
+			auto *block = dynamic_cast<Block *>(item);
+			if (block == nullptr) continue;
+			if (block->x == navigator[0][1] && block->y == navigator[0][0]) {
+				block->select();
+			}
+			if (block->x == navigator[1][1] && block->y == navigator[1][0]) {
+				block->select();
+			}
+		}
+	}
 	drawLightning(navigator);
 }
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
+	if (seq.size() == 0) return;
 	lightningSequence.clear();
 	int prevx = seq[0][1], prevy = seq[0][0];
 	int u, v;
@@ -213,12 +226,7 @@ void LianLianKan::linking(Block * next) {
 			prev = next;
 			return;
 		}
-		// some operations to prevent bad linking...
-		//if (judge(from, next)) {
-		//		prev->deselect();
-		//		next->select();
-		//		return;
-		//}
+
 		prev->deselect();
 		scene->removeItem(prev);
 		scene->removeItem(next);

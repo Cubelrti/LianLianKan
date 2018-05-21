@@ -24,8 +24,8 @@ Block::Block(QObject *parent, int block_type, int x, int y)
 {
 	
 
-	const int X_OFFSET = 6;
-	const int Y_OFFSET = 155;
+	const int X_OFFSET = 27; //6
+	const int Y_OFFSET = 175; //155
 	const int X_PER_BLOCK = 30;
 	const int Y_PER_BLOCK = 35;
 

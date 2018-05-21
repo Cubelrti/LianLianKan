@@ -17,8 +17,8 @@ const QRect rects[2] = {
 Lightning::Lightning(QObject *parent, DIRECTION direction, int x, int y)
 	: QObject(parent), direction(direction)
 {
-	const int X_OFFSET = 10;
-	const int Y_OFFSET = 155;
+	const int X_OFFSET = 31;
+	const int Y_OFFSET = 175;
 	const int X_PER_BLOCK = 30;
 	const int Y_PER_BLOCK = 35;
 
