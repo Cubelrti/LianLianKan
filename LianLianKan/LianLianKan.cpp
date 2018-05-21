@@ -10,6 +10,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	scene->setSceneRect(0, 0, 791, 571);
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(startGame()));
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
+	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigate()));
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
 	{
@@ -52,6 +53,11 @@ void LianLianKan::resortGame() {
 			scene->addItem(_block);
 		}
 	}
+}
+
+void LianLianKan::navigate() {
+	auto navigator = map.prompt();
+	drawLightning(navigator);
 }
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {

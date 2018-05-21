@@ -68,7 +68,7 @@ background: transparent;
       <x>640</x>
       <y>160</y>
       <width>31</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -76,8 +76,34 @@ background: transparent;
 QPushButton:hover { 
 background-image: url(:/LianLianKan/Resort.png);
 background-repeat: no-repeat;
-margin-top: 5px;
-margin-left: -2.7px;
+margin-top: 4px;
+margin-left: -2px;
+}
+QPushButton:pressed{
+background: transparent;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="navigateButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>160</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton { background: transparent; border: none;} 
+QPushButton:hover { 
+background-image: url(:/LianLianKan/Hint.png);
+background-repeat: no-repeat;
+margin-top: 4px;
+margin-left: 5px;
 }
 QPushButton:pressed{
 background: transparent;

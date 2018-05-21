@@ -32,6 +32,7 @@ private:
 	void linking(Block * next);
 	void drawBlocks();
 private slots:
+	void navigate();
 	void resortGame();
 	void startGame();
 };
