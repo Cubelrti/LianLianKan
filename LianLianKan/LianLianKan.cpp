@@ -33,6 +33,7 @@ void LianLianKan::drawBlocks() {
 }
 
 void LianLianKan::startGame() {
+
 	prev = nullptr;
 	scene->clear();
 	lightningSequence.clear();
@@ -93,17 +94,45 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 		}
 		else if (prevx < nextx && prevy > nexty || prevx > nextx && prevy < nexty) {
 			// 左下右上型
-			if (prev == UD || prev == RD) {
-				if (prev_delta == 1)
+			if (prev == UD) {
+				if (prev_delta == 1) {
 					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
-				else 
+					prev = LU;
+				}
+				else {
 					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+					prev = RD;
+				}
 			}
-			else if(prev == LR || prev == LD) {
-				if (prev_delta == 1)
+			else if(prev == LR) {
+				if (prev_delta == 1) {
 					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
-				else 
+					prev = LU;
+				}
+				else {
 					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+					prev = RD;
+				}
+			}
+			else if (prev == RD){
+
+				lightningSequence.push_back(new Lightning(this, LU, currx, curry));
+			}
+			else if (prev == RU) {
+				if (curry < nexty) {
+					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
+				} else
+				lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+			}
+			else if (prev == LD) {
+				if(nexty < curry)
+					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+				else if (nextx > currx) {
+					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
+				}
+				else {
+					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+				}
 			}
 			else if (prev == LU) {
 				lightningSequence.push_back(new Lightning(this, RD, currx, curry));
@@ -111,20 +140,48 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 		}
 		else if (prevx > nextx && prevy > nexty || prevx < nextx && prevy < nexty) {
 			// 左上右下型
-			if (prev == UD || prev == RD) {
-				if (prev_delta == 1)
+			if (prev == UD) {
+				if (prev_delta == 1) {
 					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
-				else
+					prev = RU;
+				}
+				else {
 					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+					prev = LD;
+				}
 			}
-			else if (prev == LR || prev == LD) {
-				if (prev_delta == 1)
+			else if (prev == LR) {
+				if (prev_delta == 1) {
 					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+					prev = LD;
+				}
+				else {
+					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+					prev = RU;
+				}
+			}
+			else if (prev == LD) {
+				lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+			}
+			else if (prev == RU) {
+				if(nextx > currx)
+					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+				else if (nexty < curry) {
+					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+				} else
+					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+			}
+			else if (prev == RD) {
+				if (nexty < curry)
+					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
 				else
 					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
 			}
 			else if (prev == LU) {
-				lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+				if (nexty > curry) {
+					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+				} else
+				lightningSequence.push_back(new Lightning(this, LD, currx, curry));
 			}
 		}
 		prevx = currx;
