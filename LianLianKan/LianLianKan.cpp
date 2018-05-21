@@ -39,16 +39,35 @@ void LianLianKan::startGame() {
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 	lightningSequence.clear();
-	int x = seq[0][1], y = seq[0][0];
+	int prevx = seq[0][1], prevy = seq[0][0];
 	int u, v;
-	DIRECTION direction;
+	DIRECTION prev, next;
 	if (seq.size() == 2) return;
 	for (int i = 1; i < seq.size() - 1; i++)
 	{
-		u = seq[i][1];
-		v = seq[i][0];
-		// checking prev'point to next'point direction
-		lightningSequence.push_back(new Lightning(this, LR, u, v));
+		int currx = seq[i][1], curry = seq[i][0];
+		int nextx = seq[i + 1][1], nexty = seq[i + 1][0];
+		// DETERMINE BY PREV1 AND NEXT1
+		if (prevx == nextx) {
+			lightningSequence.push_back(new Lightning(this, UD, currx, curry));
+		}
+		else if (prevy == nexty) {
+			lightningSequence.push_back(new Lightning(this, LR, currx, curry));
+		}
+		else if (prevx < nextx && prevy < nexty) {
+			lightningSequence.push_back(new Lightning(this, RU, currx, curry));
+		}
+		else if (prevx > nextx && prevy < nexty) {
+			lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+		}
+		else if (prevx < nextx && prevy > nexty) {
+			lightningSequence.push_back(new Lightning(this, LU, currx, curry));
+		}
+		else if (prevx > nextx && prevy > nexty) {
+			lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+		}
+		prevx = currx;
+		prevy = curry;
 	}
 
 

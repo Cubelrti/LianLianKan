@@ -28,6 +28,9 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Maps">
+      <UniqueIdentifier>{66b437ac-b25f-48f1-8487-d0125c7cb19f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -79,21 +82,53 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Maps\Map1.txt" />
-    <Text Include="Maps\Map2.txt" />
-    <Text Include="Maps\Map3.txt" />
-    <Text Include="Maps\Map4.txt" />
-    <Text Include="Maps\Map5.txt" />
-    <Text Include="Maps\Map6.txt" />
-    <Text Include="Maps\Map7.txt" />
-    <Text Include="Maps\Map8.txt" />
-    <Text Include="Maps\Map9.txt" />
-    <Text Include="Maps\Map10.txt" />
-    <Text Include="Maps\Map11.txt" />
-    <Text Include="Maps\Map12.txt" />
-    <Text Include="Maps\Map13.txt" />
-    <Text Include="Maps\Map14.txt" />
-    <Text Include="Maps\Map15.txt" />
-    <Text Include="Maps\Map16.txt" />
+    <Text Include="Maps\Map1.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map2.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map3.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map4.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map5.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map6.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map7.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map8.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map9.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map10.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map11.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map12.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map13.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map14.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map15.txt">
+      <Filter>Maps</Filter>
+    </Text>
+    <Text Include="Maps\Map16.txt">
+      <Filter>Maps</Filter>
+    </Text>
   </ItemGroup>
 </Project>
