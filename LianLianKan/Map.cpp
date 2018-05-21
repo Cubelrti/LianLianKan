@@ -197,7 +197,7 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2) {
 		recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 		for (int i = 0; i < WIDTH; i++) {
 			if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
-				if (isLineLinkable(x1, i, x2, i)) {
+				if (isLineLinkable(x1, i, x2, y2)) {
 					if (i >= y1) {
 						for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
 						y1--;
