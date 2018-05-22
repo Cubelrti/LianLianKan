@@ -17,7 +17,7 @@ Block::Block(QObject *parent, int block_type, int x, int y, QPixmap &pixmap)
 
 void Block::select() {
 
-		const QString mask = ":/LianLianKan/Sel.png";
+		const QString mask = ":/LianLianKan/Images/Sel.png";
 		QPixmap pixmap = QPixmap(this->pixmap());
 		QPainter painter(&pixmap);
 		painter.drawPixmap(4, 0, QPixmap(mask));

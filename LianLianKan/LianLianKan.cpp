@@ -341,8 +341,15 @@ void LianLianKan::linking(Block * next) {
 		delete prev;
 		delete next;
 		prev = nullptr;
+		// check if there is no more avalible block -- 
 		if (remainBlocks == 0) {
 			endGame();
+		}
+		if (map.prompt().size() == 0) {
+			QGraphicsTextItem *prompt = new QGraphicsTextItem(QString::fromUtf16(u"检测到死局，请使用重排道具！"));
+			prompt->setPos(200, 250);
+			prompt->setDefaultTextColor(Qt::black);
+			scene->addItem(prompt);
 		}
 		return;
 	}

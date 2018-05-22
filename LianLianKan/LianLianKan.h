@@ -11,6 +11,7 @@
 #include <QPixmap>
 #include <QMediaPlayer>
 #include <QSound>
+#include <QGraphicsTextItem>
 
 class LianLianKan : public QMainWindow
 {
