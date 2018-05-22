@@ -27,6 +27,7 @@ private:
 	std::vector<Lightning *> lightningSequence;
 	std::vector<QPixmap> boomPixmaps;
 	std::vector<QPixmap> fireworkPixmaps;
+	std::vector<QPixmap> blockPixmaps;
 	Block *prev = nullptr;
 	Map map;
 	void drawLightning(std::vector<std::vector<int>> seq);
