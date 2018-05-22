@@ -24,6 +24,13 @@ LianLianKan::LianLianKan(QWidget *parent)
 	{
 		fireworkPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png"));
 	}
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			blockPixmaps.push_back(QPixmap(images[i]).copy(rects[j]));
+		}
+	}
 	// timers
 	connect(&lifeTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 	// user init
@@ -64,7 +71,8 @@ void LianLianKan::drawBlocks() {
 		for (int j = 0; j < 10; j++)
 		{
 			if (mapVec[j][i] == 0) continue;
-			Block *_block = new Block(this, mapVec[j][i] - 1, i, j);
+			int block_type = mapVec[j][i] - 1;
+			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
 			scene->addItem(_block);
 			block_count++;
 		}
@@ -122,7 +130,8 @@ void LianLianKan::resortGame() {
 		for (int j = 0; j < 10; j++)
 		{
 			if (mapVec[j][i] == 0) continue;
-			Block *_block = new Block(this, mapVec[j][i] - 1, i, j);
+			int block_type = mapVec[j][i] - 1;
+			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
 			scene->addItem(_block);
 		}
 	}
