@@ -57,7 +57,7 @@ void LianLianKan::updateUserInfo() {
 }
 
 void LianLianKan::drawBlocks() {
-	auto mapVec = map.makeMap(normal);
+	auto mapVec = map.makeMap(difficult);
 	int block_count = 0;
 	for (int i = 17; i >= 0; i--)
 	{

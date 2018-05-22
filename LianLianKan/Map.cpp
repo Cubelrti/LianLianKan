@@ -19,14 +19,6 @@ bool Map::full_true(vector<bool> flags) {
 	return true;
 }
 
-void Map::recover(int &x1, int &y1, int &x2, int &y2, int tmp_x1, int tmp_y1,
-	int tmp_x2, int tmp_y2) {
-	swap(x1, tmp_x1);
-	swap(y1, tmp_y1);
-	swap(x2, tmp_x2);
-	swap(y2, tmp_y2);
-}
-
 bool Map::isLineLinkable(int x1, int y1, int x2, int y2) {
 	if (x1 == x2) {
 		if (y1 > y2) std::swap(y1, y2);
@@ -92,13 +84,18 @@ vector<vector<int>> Map::makeMap(Difficulty level) {
 		readMap.close();
 	}
 	int len = position.size();
-	while (1) {
-		int element1 = rand() % len;
-		while (flags[element1]) element1 = rand() % len;
-		int element2 = rand() % len;
-		while (element2 == element1 || flags[element2]) element2 = rand() % len;
-		flags[element1] = true;
-		flags[element2] = true;
+	int tmp_len = len;
+	for (int i = 0; i < len; i++) {
+		if (flags[i]) {
+			tmp_len--;
+			continue;
+		};
+		int j = i + (rand() % (tmp_len - 1)) + 1;
+		while (flags[j])
+			j = i + (rand() % (tmp_len - 1)) + 1;
+		flags[i] = true;
+		flags[j] = true;
+		tmp_len--;
 		int rand_element = 1 + (rand() % 40);
 		while (1) {
 			if (frequency[rand_element] < 3) {
@@ -108,8 +105,8 @@ vector<vector<int>> Map::makeMap(Difficulty level) {
 			else
 				rand_element = 1 + (rand() % 40);
 		}
-		map[position[element1][0]][position[element1][1]] = rand_element;
-		map[position[element2][0]][position[element2][1]] = rand_element;
+		map[position[i][0]][position[i][1]] = rand_element;
+		map[position[j][0]][position[j][1]] = rand_element;
 		if (full_true(flags)) break;
 	}
 	return map;
@@ -131,7 +128,6 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 		}
 		return route;
 	}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	if (y1 == y2 && isLineLinkable(x1, y1, x2, y2)) {
 		if (x1 > x2) swap(x1, x2);
 		for (x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
@@ -141,7 +137,6 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 		}
 		return route;
 	}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	for (int i = 0; i < WIDTH; i++) {
 		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
 			if (isLineLinkable(x1, i, x2, y2)) {
@@ -165,7 +160,6 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 			}
 		}
 	}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	for (int i = 0; i < HEIGHT; i++) {
 		if (!map[i][y1] && isLineLinkable(i, y1, x1, y1)) {
 			if (isLineLinkable(i, y1, x2, y2)) {
@@ -189,7 +183,6 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 			}
 		}
 	}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	int alpha = -1;
 	int beta = -1;
 	for (int i = x1 + 1; i < HEIGHT; i++)
@@ -232,7 +225,6 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 		}
 		return route;
 	}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	alpha = -1;
 	beta = -1;
 	for (int i = y1 + 1; i < WIDTH; i++) {

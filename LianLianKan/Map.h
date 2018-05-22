@@ -23,7 +23,6 @@ private:
 	bool isLineLinkable(int x1, int y1, int x2, int y2);
 	vector<vector<int>> map;
 	bool full_true(vector<bool> flags);
-	void recover(int & x1, int & y1, int & x2, int & y2, int tmp_x1, int tmp_y1, int tmp_x2, int tmp_y2);
 	int find_right_number(int alpha, int beta, int x = -1, int y = -1);
 };
 
