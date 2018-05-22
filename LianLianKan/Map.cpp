@@ -45,7 +45,7 @@ bool Map::isLineLinkable(int x1, int y1, int x2, int y2) {
 	return true;
 }
 
-vector<vector<int>> Map::makeMap() {
+vector<vector<int>> Map::makeMap(Difficulty level) {
 	map.clear();
 	vector<bool> flags;
 	vector<vector<int>> position;
@@ -53,7 +53,12 @@ vector<vector<int>> Map::makeMap() {
 	memset(frequency, 0, sizeof(frequency));
 	srand((unsigned)time(NULL));
 	int order = 0;
-	order = 1 + (rand() % 16);
+	if (level == easy)
+		order = 1 + (rand() % 4);
+	else if (level == normal)
+		order = 5 + (rand() % 8);
+	else if (level == difficult)
+		order = 13 + (rand() % 4);
 	string filename = "./Maps/Map" + std::to_string(order) + ".txt";
 	fstream readMap;
 	readMap.open(filename.c_str());

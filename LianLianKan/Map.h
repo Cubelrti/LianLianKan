@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+enum Difficulty{easy, normal, difficult};
+
 using namespace std;
 class Map
 {
@@ -14,7 +16,7 @@ public:
 	Map();
 	~Map();
 	vector<vector<int>> connection(int x1, int y1, int x2, int y2, bool promptFlag = false);
-	vector<vector<int>> makeMap();
+	vector<vector<int>> makeMap(Difficulty level);
 	vector<vector<int>> rearrange();
 	vector<vector<int>> prompt();
 private:

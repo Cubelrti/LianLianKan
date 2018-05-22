@@ -36,7 +36,7 @@ void LianLianKan::update_timer() {
 }
 
 void LianLianKan::drawBlocks() {
-	auto mapVec = map.makeMap();
+	auto mapVec = map.makeMap(normal);
 	int block_count = 0;
 	for (int i = 17; i >= 0; i--)
 	{
@@ -60,7 +60,7 @@ void LianLianKan::endGame() {
 	life_timer.stop();
 	auto ex_boom = new BoomEffect(this, 1, -4, fireworkPixmaps);
 	ex_boom->setScale(2);
-	if(remain_blocks == 0)
+	if (remain_blocks == 0)
 		ui.remainBlock->setText(QString::fromUtf16(u"ƒ„”Æ¡À£°"));
 	else
 		ui.remainBlock->setText(QString::fromUtf16(u"”Œœ∑Ω· ¯£°"));
@@ -169,7 +169,7 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 					prev = RD;
 				}
 			}
-			else if(prev == LR) {
+			else if (prev == LR) {
 				if (prev_delta == 1) {
 					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
 					prev = LU;
@@ -179,18 +179,19 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 					prev = RD;
 				}
 			}
-			else if (prev == RD){
+			else if (prev == RD) {
 
 				lightningSequence.push_back(new Lightning(this, LU, currx, curry));
 			}
 			else if (prev == RU) {
 				if (curry < nexty) {
 					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
-				} else
-				lightningSequence.push_back(new Lightning(this, RD, currx, curry));
+				}
+				else
+					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
 			}
 			else if (prev == LD) {
-				if(nexty < curry)
+				if (nexty < curry)
 					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
 				else if (nextx > currx) {
 					lightningSequence.push_back(new Lightning(this, LU, currx, curry));
@@ -229,11 +230,12 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 				lightningSequence.push_back(new Lightning(this, RU, currx, curry));
 			}
 			else if (prev == RU) {
-				if(nextx > currx)
+				if (nextx > currx)
 					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
 				else if (nexty < curry) {
 					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
-				} else
+				}
+				else
 					lightningSequence.push_back(new Lightning(this, RD, currx, curry));
 			}
 			else if (prev == RD) {
@@ -245,8 +247,9 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 			else if (prev == LU) {
 				if (nexty > curry) {
 					lightningSequence.push_back(new Lightning(this, RU, currx, curry));
-				} else
-				lightningSequence.push_back(new Lightning(this, LD, currx, curry));
+				}
+				else
+					lightningSequence.push_back(new Lightning(this, LD, currx, curry));
 			}
 		}
 		prevx = currx;
