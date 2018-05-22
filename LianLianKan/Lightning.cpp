@@ -1,12 +1,12 @@
 #include "Lightning.h"
 
 const QString images[6] = {
-	":/LianLianKan/Elec1.png",
-	":/LianLianKan/Elec2.png",
-	":/LianLianKan/Elec3.png",
-	":/LianLianKan/Elec4.png",
-	":/LianLianKan/Elec5.png",
-	":/LianLianKan/Elec6.png",
+	":/LianLianKan/Images/Elec1.png",
+	":/LianLianKan/Images/Elec2.png",
+	":/LianLianKan/Images/Elec3.png",
+	":/LianLianKan/Images/Elec4.png",
+	":/LianLianKan/Images/Elec5.png",
+	":/LianLianKan/Images/Elec6.png",
 };
 
 const QRect rects[2] = {

@@ -5,16 +5,16 @@
 #include <QPainter>
 
 const QString images[10] = {
-	":/LianLianKan/Elem1.png",
-	":/LianLianKan/Elem2.png",
-	":/LianLianKan/Elem3.png",
-	":/LianLianKan/Elem4.png",
-	":/LianLianKan/Elem5.png",
-	":/LianLianKan/Elem6.png",
-	":/LianLianKan/Elem7.png",
-	":/LianLianKan/Elem8.png",
-	":/LianLianKan/Elem9.png",
-	":/LianLianKan/Elem10.png"
+	":/LianLianKan/Images/Elem1.png",
+	":/LianLianKan/Images/Elem2.png",
+	":/LianLianKan/Images/Elem3.png",
+	":/LianLianKan/Images/Elem4.png",
+	":/LianLianKan/Images/Elem5.png",
+	":/LianLianKan/Images/Elem6.png",
+	":/LianLianKan/Images/Elem7.png",
+	":/LianLianKan/Images/Elem8.png",
+	":/LianLianKan/Images/Elem9.png",
+	":/LianLianKan/Images/Elem10.png"
 };
 const QRect rects[4] = {
 	QRect(0, 0, 35, 39),
