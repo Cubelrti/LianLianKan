@@ -32,11 +32,15 @@ private:
 	void drawLightning(std::vector<std::vector<int>> seq);
 	void drawBoom(Block * prev, Block * next);
 	void linking(Block * next);
+	void update_user_info();
 	void drawBlocks();
 	QTimer life_timer;
 	int remain_blocks;
 	QMediaPlayer player;
+	QString username;
+	int score;
 private slots:
+	void pause_game();
 	void update_timer();
 	void navigate();
 	void resortGame();
