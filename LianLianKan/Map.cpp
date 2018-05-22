@@ -41,8 +41,7 @@ vector<vector<int>> Map::makeMap(Difficulty level) {
 	map.clear();
 	vector<bool> flags;
 	vector<vector<int>> position;
-	int frequency[41];
-	memset(frequency, 0, sizeof(frequency));
+	vector<int> frequency(41, 0);
 	srand((unsigned)time(NULL));
 	int order = 0;
 	if (level == easy)
@@ -275,10 +274,9 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 
 vector<vector<int>> Map::rearrange() {
 	srand((unsigned)time(NULL));
-	int frequencies[41];
+	vector<int> frequencies(41, 0);
 	vector<vector <int>> position;
 	vector<bool> flags;
-	memset(frequencies, 0, sizeof(frequencies));
 	for (int i = 0; i < HEIGHT; i++)
 		for (int j = 0; j < WIDTH; j++) {
 			if (map[i][j]) {
@@ -287,14 +285,15 @@ vector<vector<int>> Map::rearrange() {
 				frequencies[map[i][j]]++;
 			}
 		}
-
 	int len = position.size();
 	for (int i = 1; i < 41; i++) {
 		while (frequencies[i]) {
 			int element1 = rand() % len;
-			while (flags[element1]) element1 = rand() % len;
+			while (flags[element1])
+				element1 = rand() % len;
 			int element2 = rand() % len;
-			while (element2 == element1 || flags[element2]) element2 = rand() % len;
+			while (element2 == element1 || flags[element2])
+				element2 = rand() % len;
 			flags[element1] = true;
 			flags[element2] = true;
 			map[position[element1][0]][position[element1][1]] = i;
