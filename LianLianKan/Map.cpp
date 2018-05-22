@@ -348,4 +348,5 @@ int Map::find_right_number(int alpha, int beta, int x, int y) {
 		}
 
 	}
+	return 0;
 }

@@ -16,10 +16,28 @@ LianLianKan::LianLianKan(QWidget *parent)
 	{
 		boomPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png").scaled(60, 65));
 	}
+	for (int i = 1; i <= 50; i++)
+	{
+		fireworkPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png"));
+	}
+	// timers
+	connect(&life_timer, SIGNAL(timeout()), this, SLOT(update_timer()));
+}
+
+void LianLianKan::update_timer() {
+	int val = ui.timeBar->value();
+	if (val == 100) {
+		life_timer.stop();
+		endGame();
+	}
+
+	ui.timeBar->setValue(val + 1);
+	ui.timeBar->repaint();
 }
 
 void LianLianKan::drawBlocks() {
 	auto mapVec = map.makeMap();
+	int block_count = 0;
 	for (int i = 17; i >= 0; i--)
 	{
 		for (int j = 0; j < 10; j++)
@@ -27,9 +45,18 @@ void LianLianKan::drawBlocks() {
 			if (mapVec[j][i] == 0) continue;
 			Block *_block = new Block(this, mapVec[j][i] - 1, i, j);
 			scene->addItem(_block);
+			block_count++;
 		}
 	}
+	remain_blocks = block_count;
+}
 
+void LianLianKan::endGame() {
+	life_timer.stop();
+	auto ex_boom = new BoomEffect(this, 5, 0, fireworkPixmaps);
+	ui.remainBlock->setText(QString::fromUtf16(u"ÓÎÏ·½áÊø£¡"));
+	scene->addItem(ex_boom);
+	remain_blocks = 0;
 }
 
 void LianLianKan::startGame() {
@@ -38,6 +65,10 @@ void LianLianKan::startGame() {
 	scene->clear();
 	lightningSequence.clear();
 	drawBlocks();
+	ui.timeBar->setValue(0);
+	ui.timeBar->setMaximum(100);
+	life_timer.start(100);
+	ui.remainBlock->setText(QString::number(remain_blocks));
 }
 
 void LianLianKan::resortGame() {
@@ -218,6 +249,9 @@ void LianLianKan::removeBoom(BoomEffect * effect) {
 }
 
 void LianLianKan::linking(Block * next) {
+	if (remain_blocks == 0) {
+		return;
+	}
 	if (prev) {
 		auto directionVec = map.connection(prev->y, prev->x, next->y, next->x);
 		if (directionVec.size() == 0) {
@@ -226,7 +260,9 @@ void LianLianKan::linking(Block * next) {
 			prev = next;
 			return;
 		}
-
+		remain_blocks -= 2;
+		ui.timeBar->setValue(0);
+		ui.remainBlock->setText(QString::number(remain_blocks));
 		prev->deselect();
 		scene->removeItem(prev);
 		scene->removeItem(next);
@@ -245,6 +281,9 @@ void LianLianKan::linking(Block * next) {
 		delete prev;
 		delete next;
 		prev = nullptr;
+		if (remain_blocks == 0) {
+			endGame();
+		}
 		return;
 	}
 	next->select();
