@@ -344,6 +344,7 @@ void LianLianKan::linking(Block * next) {
 		// check if there is no more avalible block -- 
 		if (remainBlocks == 0) {
 			endGame();
+			return;
 		}
 		if (map.prompt().size() == 0) {
 			QGraphicsTextItem *prompt = new QGraphicsTextItem(QString::fromUtf16(u"检测到死局，请使用重排道具！"));
