@@ -14,7 +14,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(startGame()));
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
 	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigate()));
-	connect(ui.pauseButton, SIGNAL(clicked()), this, SLOT(pause_game()));
+	connect(ui.pauseButton, SIGNAL(clicked()), this, SLOT(pauseGame()));
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
 	{
@@ -25,17 +25,17 @@ LianLianKan::LianLianKan(QWidget *parent)
 		fireworkPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png"));
 	}
 	// timers
-	connect(&life_timer, SIGNAL(timeout()), this, SLOT(update_timer()));
+	connect(&lifeTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 	// user init
 	username = QString::fromUtf16(u"游客");
 	score = 0;
-	update_user_info();
+	updateUserInfo();
 }
 
-void LianLianKan::update_timer() {
+void LianLianKan::updateTimer() {
 	int val = ui.timeBar->value();
 	if (val == 100) {
-		life_timer.stop();
+		lifeTimer.stop();
 		endGame();
 	}
 
@@ -43,14 +43,14 @@ void LianLianKan::update_timer() {
 	ui.timeBar->repaint();
 }
 
-void LianLianKan::pause_game() {
-	if (life_timer.isActive()) {
-		life_timer.stop();
+void LianLianKan::pauseGame() {
+	if (lifeTimer.isActive()) {
+		lifeTimer.stop();
 	}
-	else life_timer.start();
+	else lifeTimer.start();
 }
 
-void LianLianKan::update_user_info() {
+void LianLianKan::updateUserInfo() {
 	QString user_info = QString::fromUtf16(u"昵称：") + username 
 		+ "\n" + QString::fromUtf16(u"分数：") + QString::number(score);
 	ui.label->setText(user_info);
@@ -69,30 +69,28 @@ void LianLianKan::drawBlocks() {
 			block_count++;
 		}
 	}
-	remain_blocks = block_count;
-	// free gentally.
-	mapVec.clear();
+	remainBlocks = block_count;
 }
 
 void LianLianKan::endGame() {
 	QSound::play("./Sounds/boom.wav");
 	QSound::play("./Sounds/end.wav");
 	player.stop();
-	life_timer.stop();
+	lifeTimer.stop();
 	auto ex_boom = new BoomEffect(this, 1, -4, fireworkPixmaps);
 	ex_boom->setScale(2);
-	if (remain_blocks == 0) {
+	if (remainBlocks == 0) {
 		ui.remainBlock->setText(QString::fromUtf16(u"你赢了！"));
 		score += 10;
-		update_user_info();
+		updateUserInfo();
 	}
 	else {
 		ui.remainBlock->setText(QString::fromUtf16(u"游戏结束！"));		
 		score -= 10;
-		update_user_info();
+		updateUserInfo();
 	}
 	scene->addItem(ex_boom);
-	remain_blocks = 0;
+	remainBlocks = 0;
 }
 
 void LianLianKan::startGame() {
@@ -103,15 +101,15 @@ void LianLianKan::startGame() {
 	drawBlocks();
 	ui.timeBar->setValue(0);
 	ui.timeBar->setMaximum(100);
-	life_timer.start(100);
-	ui.remainBlock->setText(QString::number(remain_blocks));
+	lifeTimer.start(100);
+	ui.remainBlock->setText(QString::number(remainBlocks));
 	player.setMedia(QUrl::fromLocalFile("./Sounds/BGM.mp3"));
 	player.setVolume(50);
 	player.play();
 }
 
 void LianLianKan::resortGame() {
-	if (remain_blocks == 0) {
+	if (remainBlocks == 0) {
 		return;
 	}
 	QSound::play("./Sounds/item.wav");
@@ -131,7 +129,7 @@ void LianLianKan::resortGame() {
 }
 
 void LianLianKan::navigate() {
-	if (remain_blocks == 0) {
+	if (remainBlocks == 0) {
 		return;
 	}
 	QSound::play("./Sounds/item.wav");
@@ -301,7 +299,7 @@ void LianLianKan::removeBoom(BoomEffect * effect) {
 }
 
 void LianLianKan::linking(Block * next) {
-	if (remain_blocks == 0) {
+	if (remainBlocks == 0) {
 		return;
 	}
 	if (prev) {
@@ -312,9 +310,9 @@ void LianLianKan::linking(Block * next) {
 			prev = next;
 			return;
 		}
-		remain_blocks -= 2;
+		remainBlocks -= 2;
 		ui.timeBar->setValue(0);
-		ui.remainBlock->setText(QString::number(remain_blocks));
+		ui.remainBlock->setText(QString::number(remainBlocks));
 		prev->deselect();
 		scene->removeItem(prev);
 		scene->removeItem(next);
@@ -334,7 +332,7 @@ void LianLianKan::linking(Block * next) {
 		delete prev;
 		delete next;
 		prev = nullptr;
-		if (remain_blocks == 0) {
+		if (remainBlocks == 0) {
 			endGame();
 		}
 		return;
