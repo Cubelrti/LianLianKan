@@ -1,8 +1,9 @@
 <RCC>
   <qresource prefix="LianLianKan">
     <file>Client.ico</file>
-    <file>Background.jpg</file>
+    <file>pause.png</file>
     <file>start.jpg</file>
+    <file>Background.jpg</file>
     <file>time.jpg</file>
     <file>boom.png</file>
     <file>Cursor.png</file>

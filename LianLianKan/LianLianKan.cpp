@@ -3,14 +3,18 @@
 LianLianKan::LianLianKan(QWidget *parent)
 	: QMainWindow(parent)
 {
+	setFixedSize(791, 571);
+	// ui'cing
 	ui.setupUi(this);
 	scene = new QGraphicsScene(this);
 	ui.graphicsView->setScene(scene);
 	ui.graphicsView->installEventFilter(this);
 	scene->setSceneRect(0, 0, 791, 571);
+	// buttons
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(startGame()));
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
 	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigate()));
+	connect(ui.pauseButton, SIGNAL(clicked()), this, SLOT(pause_game()));
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
 	{
@@ -22,6 +26,10 @@ LianLianKan::LianLianKan(QWidget *parent)
 	}
 	// timers
 	connect(&life_timer, SIGNAL(timeout()), this, SLOT(update_timer()));
+	// user init
+	username = QString::fromUtf16(u"游客");
+	score = 0;
+	update_user_info();
 }
 
 void LianLianKan::update_timer() {
@@ -33,6 +41,19 @@ void LianLianKan::update_timer() {
 
 	ui.timeBar->setValue(val + 1);
 	ui.timeBar->repaint();
+}
+
+void LianLianKan::pause_game() {
+	if (life_timer.isActive()) {
+		life_timer.stop();
+	}
+	else life_timer.start();
+}
+
+void LianLianKan::update_user_info() {
+	QString user_info = QString::fromUtf16(u"昵称：") + username 
+		+ "\n" + QString::fromUtf16(u"分数：") + QString::number(score);
+	ui.label->setText(user_info);
 }
 
 void LianLianKan::drawBlocks() {
@@ -60,10 +81,16 @@ void LianLianKan::endGame() {
 	life_timer.stop();
 	auto ex_boom = new BoomEffect(this, 1, -4, fireworkPixmaps);
 	ex_boom->setScale(2);
-	if(remain_blocks == 0)
+	if (remain_blocks == 0) {
 		ui.remainBlock->setText(QString::fromUtf16(u"你赢了！"));
-	else
-		ui.remainBlock->setText(QString::fromUtf16(u"游戏结束！"));
+		score += 10;
+		update_user_info();
+	}
+	else {
+		ui.remainBlock->setText(QString::fromUtf16(u"游戏结束！"));		
+		score -= 10;
+		update_user_info();
+	}
 	scene->addItem(ex_boom);
 	remain_blocks = 0;
 }

@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>LianLianKanClass</class>
  <widget class="QMainWindow" name="LianLianKanClass">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,6 +24,12 @@
   </property>
   <property name="styleSheet">
    <string notr="true"/>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QGraphicsView" name="graphicsView">
@@ -192,8 +201,34 @@ margin-bottom: 1px;
      <string notr="true">color: white;</string>
     </property>
     <property name="text">
-     <string>昵称：向朝柱
+     <string>昵称：游客
 分数：0</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pauseButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>530</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton { background: transparent; border: none;} 
+QPushButton:hover { 
+background-image: url(:/LianLianKan/pause.png);
+background-repeat: no-repeat;
+margin-top: -4px;
+margin-left: -4px;
+}
+QPushButton:pressed{
+background: transparent;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
