@@ -137,70 +137,6 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 		return route;
 	}
 	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
-	for (int i = 0; i < HEIGHT; i++)
-		if (!map[i][y1] && isLineLinkable(i, y1, x1, y1)) {
-			if (!map[i][y2] && isLineLinkable(i, y2, x2, y2) &&
-				isLineLinkable(i, y1, i, y2)) {
-				if (i >= x1) {
-					for (x1; x1 <= i; x1++) route.push_back({ x1, y1 });
-					x1--;
-				}
-				else {
-					for (x1; x1 >= i; x1--) route.push_back({ x1, y1 });
-					x1++;
-				}
-				if (y1 > y2) {
-					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
-					y1++;
-				}
-				else {
-					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
-					y1--;
-				}
-				if (x1 > x2)
-					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
-				else
-					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
-				if (!promptFlag) {
-					map[tmp_x1][tmp_y1] = 0;
-					map[tmp_x2][tmp_y2] = 0;
-				}
-				return route;
-			}
-		}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
-	for (int i = 0; i < WIDTH; i++)
-		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
-			if (!map[x2][i] && isLineLinkable(x2, i, x2, y2) &&
-				isLineLinkable(x1, i, x2, i)) {
-				if (i >= y1) {
-					for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
-					y1--;
-				}
-				else {
-					for (y1; y1 >= i; y1--) route.push_back({ x1, y1 });
-					y1++;
-				}
-				if (x1 < x2) {
-					for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
-					x1--;
-				}
-				else {
-					for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
-					x1++;
-				}
-				if (y1 > y2)
-					for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
-				else
-					for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
-				if (!promptFlag) {
-					map[tmp_x1][tmp_y1] = 0;
-					map[tmp_x2][tmp_y2] = 0;
-				}
-				return route;
-			}
-		}
-	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
 	for (int i = 0; i < WIDTH; i++) {
 		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1)) {
 			if (isLineLinkable(x1, i, x2, y2)) {
@@ -248,6 +184,95 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 			}
 		}
 	}
+	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
+	int alpha = -1;
+	int beta = -1;
+	for (int i = x1 + 1; i < HEIGHT; i++)
+		if (!map[i][y1] && isLineLinkable(i, y1, x1, y1) && !map[i][y2] && isLineLinkable(i, y2, x2, y2) &&
+			isLineLinkable(i, y1, i, y2)) {
+			alpha = i;
+			break;
+		}
+	for (int i = x1 - 1; i >= 0; i--)
+		if (!map[i][y1] && isLineLinkable(i, y1, x1, y1) && !map[i][y2] && isLineLinkable(i, y2, x2, y2) &&
+			isLineLinkable(i, y1, i, y2)) {
+			beta = i;
+			break;
+		}
+	if (alpha != -1 || beta != -1) {
+		int i = find_right_number(alpha, beta, x1, -1);
+		if (i >= x1) {
+			for (x1; x1 <= i; x1++) route.push_back({ x1, y1 });
+			x1--;
+		}
+		else {
+			for (x1; x1 >= i; x1--) route.push_back({ x1, y1 });
+			x1++;
+		}
+		if (y1 > y2) {
+			for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
+			y1++;
+		}
+		else {
+			for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+			y1--;
+		}
+		if (x1 > x2)
+			for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+		else
+			for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
+		if (!promptFlag) {
+			map[tmp_x1][tmp_y1] = 0;
+			map[tmp_x2][tmp_y2] = 0;
+		}
+		return route;
+	}
+	recover(x1, y1, x2, y2, tmp_x1, tmp_y1, tmp_x2, tmp_y2);
+	alpha = -1;
+	beta = -1;
+	for (int i = y1 + 1; i < WIDTH; i++) {
+		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1) && !map[x2][i] && isLineLinkable(x2, i, x2, y2) &&
+			isLineLinkable(x1, i, x2, i)) {
+			alpha = i;
+			break;
+		}
+	}
+	for (int i = y1 - 1; i >= 0; i--) {
+		if (!map[x1][i] && isLineLinkable(x1, i, x1, y1) && !map[x2][i] && isLineLinkable(x2, i, x2, y2) &&
+			isLineLinkable(x1, i, x2, i)) {
+			beta = i;
+			break;
+		}
+	}
+	if (alpha != -1 || beta != -1) {
+		int i = find_right_number(alpha, beta, -1, y1);
+		if (i >= y1) {
+			for (y1; y1 <= i; y1++) route.push_back({ x1, y1 });
+			y1--;
+		}
+		else {
+			for (y1; y1 >= i; y1--) route.push_back({ x1, y1 });
+			y1++;
+		}
+		if (x1 < x2) {
+			for (++x1; x1 <= x2; x1++) route.push_back({ x1, y1 });
+			x1--;
+		}
+		else {
+			for (--x1; x1 >= x2; x1--) route.push_back({ x1, y1 });
+			x1++;
+		}
+		if (y1 > y2)
+			for (--y1; y1 >= y2; y1--) route.push_back({ x1, y1 });
+		else
+			for (++y1; y1 <= y2; y1++) route.push_back({ x1, y1 });
+		if (!promptFlag) {
+			map[tmp_x1][tmp_y1] = 0;
+			map[tmp_x2][tmp_y2] = 0;
+		}
+		return route;
+	}
+
 	return route;
 }
 
@@ -301,4 +326,26 @@ vector<vector<int>> Map::prompt() {
 			}
 	}
 	return route;
+}
+
+int Map::find_right_number(int alpha, int beta, int x, int y) {
+	int tmp_alpha = alpha;
+	int tmp_beta = beta;
+	if (tmp_alpha == -1 && tmp_beta != -1)
+		return beta;
+	if (tmp_alpha != -1 && tmp_beta == -1)
+		return alpha;
+	if (tmp_alpha != -1 && tmp_beta != -1) {
+		if (x != -1 && y == -1) {
+			if (abs(tmp_alpha - x) > abs(tmp_beta - x))
+				swap(tmp_alpha, tmp_beta);
+			return tmp_alpha;
+		}
+		if (x == -1 && y != -1) {
+			if (abs(tmp_alpha - y) > abs(tmp_beta - y))
+				swap(tmp_alpha, tmp_beta);
+			return tmp_alpha;
+		}
+
+	}
 }
