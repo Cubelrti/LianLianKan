@@ -54,6 +54,9 @@ void LianLianKan::drawBlocks() {
 }
 
 void LianLianKan::endGame() {
+	QSound::play("./Sounds/boom.wav");
+	QSound::play("./Sounds/end.wav");
+	player.stop();
 	life_timer.stop();
 	auto ex_boom = new BoomEffect(this, 1, -4, fireworkPixmaps);
 	ex_boom->setScale(2);
@@ -66,7 +69,7 @@ void LianLianKan::endGame() {
 }
 
 void LianLianKan::startGame() {
-
+	QSound::play("./Sounds/Start.wav");
 	prev = nullptr;
 	scene->clear();
 	lightningSequence.clear();
@@ -75,12 +78,16 @@ void LianLianKan::startGame() {
 	ui.timeBar->setMaximum(100);
 	life_timer.start(100);
 	ui.remainBlock->setText(QString::number(remain_blocks));
+	player.setMedia(QUrl::fromLocalFile("./Sounds/BGM.mp3"));
+	player.setVolume(50);
+	player.play();
 }
 
 void LianLianKan::resortGame() {
 	if (remain_blocks == 0) {
 		return;
 	}
+	QSound::play("./Sounds/item.wav");
 	prev = nullptr;
 	scene->clear();
 	lightningSequence.clear();
@@ -100,6 +107,7 @@ void LianLianKan::navigate() {
 	if (remain_blocks == 0) {
 		return;
 	}
+	QSound::play("./Sounds/item.wav");
 	auto navigator = map.prompt();
 	if (navigator.size() == 2) {
 		for (auto item : scene->items()) {
@@ -119,6 +127,7 @@ void LianLianKan::navigate() {
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 	if (seq.size() == 0) return;
 	lightningSequence.clear();
+	QSound::play("./Sounds/Elec.wav");
 	int prevx = seq[0][1], prevy = seq[0][0];
 	int u, v;
 	DIRECTION prev;
@@ -285,6 +294,7 @@ void LianLianKan::linking(Block * next) {
 		}
 		drawBoom(prev, next);
 		drawLightning(directionVec);
+
 		if (prev == next)
 		{
 			delete prev;
@@ -312,6 +322,7 @@ bool LianLianKan::eventFilter(QObject *obj, QEvent *event)
 			if (item == nullptr) {
 				return false;
 			}
+			QSound::play("./Sounds/Sel.wav");
 			linking(item);
 			return true;
 		}

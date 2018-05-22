@@ -9,7 +9,8 @@
 #include "GraphicsScene.h"
 #include "Map.h"
 #include <QPixmap>
-
+#include <QMediaPlayer>
+#include <QSound>
 
 class LianLianKan : public QMainWindow
 {
@@ -34,6 +35,7 @@ private:
 	void drawBlocks();
 	QTimer life_timer;
 	int remain_blocks;
+	QMediaPlayer player;
 private slots:
 	void update_timer();
 	void navigate();
