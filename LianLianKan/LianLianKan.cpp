@@ -49,12 +49,18 @@ void LianLianKan::drawBlocks() {
 		}
 	}
 	remain_blocks = block_count;
+	// free gentally.
+	mapVec.clear();
 }
 
 void LianLianKan::endGame() {
 	life_timer.stop();
-	auto ex_boom = new BoomEffect(this, 5, 0, fireworkPixmaps);
-	ui.remainBlock->setText(QString::fromUtf16(u"游戏结束！"));
+	auto ex_boom = new BoomEffect(this, 1, -4, fireworkPixmaps);
+	ex_boom->setScale(2);
+	if(remain_blocks == 0)
+		ui.remainBlock->setText(QString::fromUtf16(u"你赢了！"));
+	else
+		ui.remainBlock->setText(QString::fromUtf16(u"游戏结束！"));
 	scene->addItem(ex_boom);
 	remain_blocks = 0;
 }
@@ -72,6 +78,9 @@ void LianLianKan::startGame() {
 }
 
 void LianLianKan::resortGame() {
+	if (remain_blocks == 0) {
+		return;
+	}
 	prev = nullptr;
 	scene->clear();
 	lightningSequence.clear();
@@ -88,6 +97,9 @@ void LianLianKan::resortGame() {
 }
 
 void LianLianKan::navigate() {
+	if (remain_blocks == 0) {
+		return;
+	}
 	auto navigator = map.prompt();
 	if (navigator.size() == 2) {
 		for (auto item : scene->items()) {
@@ -237,6 +249,7 @@ void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
 	//lightningSequence.push_back(new Lightning(this, static_cast<DIRECTION>(rand() % 6), next->x, next->y));
 	for (auto it : lightningSequence) scene->addItem(it);
 }
+
 void LianLianKan::drawBoom(Block * prev, Block * next) {
 	auto boom_1 = new BoomEffect(this, prev->x, prev->y, boomPixmaps);
 	auto boom_2 = new BoomEffect(this, next->x, next->y, boomPixmaps);

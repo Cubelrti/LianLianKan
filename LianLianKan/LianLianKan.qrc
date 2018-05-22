@@ -23,11 +23,11 @@
     <file>Elem9.png</file>
     <file>Elem10.png</file>
     <file>Font.png</file>
-    <file>Hint.png</file>
     <file>line1.png</file>
     <file>line2.png</file>
-    <file>Resort.png</file>
     <file>Sel.png</file>
+    <file>Hint.png</file>
+    <file>Resort.png</file>
     <file>timebar.png</file>
   </qresource>
   <qresource prefix="Boom">
