@@ -18,7 +18,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
 	{
-		boomPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png").scaled(60, 65));
+		boomPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png").scaled(60, 60));
 	}
 	for (int i = 1; i <= 50; i++)
 	{
