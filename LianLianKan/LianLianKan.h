@@ -12,6 +12,7 @@
 #include <QMediaPlayer>
 #include <QSound>
 #include <QGraphicsTextItem>
+#include <QMediaPlaylist>
 
 class LianLianKan : public QMainWindow
 {
@@ -38,14 +39,18 @@ private:
 	void drawBlocks();
 	QTimer lifeTimer;
 	int remainBlocks;
+	int remainResorts;
+	int remainNavigators;
 	QMediaPlayer player;
 	QString username;
 	int score;
 private slots:
 	void updateTimer();
-	void navigate();
+	void navigateGame();
 	void pauseGame();
 	void resortGame();
+	void updateItems();
 	void startGame();
+	void setBackgroundMusic();
 	void endGame();
 };

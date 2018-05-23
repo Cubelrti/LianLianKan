@@ -33,7 +33,7 @@ public:
 	void deselect();
 	int x = 0;
 	int y = 0;
+	int block_type = 0;
 	~Block();
 protected:
-	int block_type = 0;
 };

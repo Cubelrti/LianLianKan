@@ -3,8 +3,8 @@
 LianLianKan::LianLianKan(QWidget *parent)
 	: QMainWindow(parent)
 {
-	setFixedSize(791, 571);
 	// ui'cing
+	setFixedSize(791, 571);
 	ui.setupUi(this);
 	scene = new QGraphicsScene(this);
 	ui.graphicsView->setScene(scene);
@@ -13,7 +13,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	// buttons
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(startGame()));
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
-	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigate()));
+	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigateGame()));
 	connect(ui.pauseButton, SIGNAL(clicked()), this, SLOT(pauseGame()));
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
@@ -64,7 +64,7 @@ void LianLianKan::updateUserInfo() {
 }
 
 void LianLianKan::drawBlocks() {
-	auto mapVec = map.makeMap(difficult);
+	auto mapVec = map.makeMap(normal);
 	int block_count = 0;
 	for (int i = 17; i >= 0; i--)
 	{
@@ -104,6 +104,9 @@ void LianLianKan::endGame() {
 void LianLianKan::startGame() {
 	QSound::play("./Sounds/Start.wav");
 	prev = nullptr;
+	remainNavigators = 3;
+	remainResorts = 2;
+	updateItems();
 	scene->clear();
 	lightningSequence.clear();
 	drawBlocks();
@@ -111,7 +114,15 @@ void LianLianKan::startGame() {
 	ui.timeBar->setMaximum(100);
 	lifeTimer.start(100);
 	ui.remainBlock->setText(QString::number(remainBlocks));
-	player.setMedia(QUrl::fromLocalFile("./Sounds/BGM.mp3"));
+	setBackgroundMusic();
+}
+
+void LianLianKan::setBackgroundMusic()
+{
+	QMediaPlaylist *playlist = new QMediaPlaylist();
+	playlist->addMedia(QUrl::fromLocalFile("./Sounds/BGM.mp3"));
+	playlist->setPlaybackMode(QMediaPlaylist::Loop);
+	player.setPlaylist(playlist);
 	player.setVolume(50);
 	player.play();
 }
@@ -135,9 +146,23 @@ void LianLianKan::resortGame() {
 			scene->addItem(_block);
 		}
 	}
+	remainResorts--;
+	updateItems();
 }
 
-void LianLianKan::navigate() {
+void LianLianKan::updateItems()
+{
+	if (remainResorts == 0) {
+		ui.resortButton->setEnabled(false);
+	}
+	else ui.resortButton->setEnabled(true);
+	if (remainNavigators == 0) {
+		ui.navigateButton->setEnabled(false);
+	}
+	else ui.navigateButton->setEnabled(true);
+}
+
+void LianLianKan::navigateGame() {
 	if (remainBlocks == 0) {
 		return;
 	}
@@ -156,6 +181,8 @@ void LianLianKan::navigate() {
 		}
 	}
 	drawLightning(navigator);
+	remainNavigators--;
+	updateItems();
 }
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq) {
@@ -308,7 +335,7 @@ void LianLianKan::removeBoom(BoomEffect * effect) {
 }
 
 void LianLianKan::linking(Block * next) {
-	if (remainBlocks == 0) {
+	if (remainBlocks == 0 || !lifeTimer.isActive()) {
 		return;
 	}
 	if (prev) {
@@ -318,6 +345,12 @@ void LianLianKan::linking(Block * next) {
 			next->select();
 			prev = next;
 			return;
+		}
+		if (next->block_type == 27) {
+			remainNavigators++;
+		}
+		if (next->block_type == 8) {
+			remainResorts++;
 		}
 		remainBlocks -= 2;
 		ui.timeBar->setValue(0);
