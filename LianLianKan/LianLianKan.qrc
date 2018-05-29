@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="LianLianKan">
+    <file>Images/blue.png</file>
+    <file>Images/red.png</file>
+    <file>Images/yellow.png</file>
     <file>Images/Background.jpg</file>
     <file>Images/boom.png</file>
     <file>Images/glow.gif</file>

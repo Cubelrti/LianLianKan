@@ -15,12 +15,66 @@ LianLianKan::LianLianKan(QWidget *parent)
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
 	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigateGame()));
 	connect(ui.pauseButton, SIGNAL(clicked()), this, SLOT(pauseGame()));
-	
+	connect(ui.easyButton, SIGNAL(clicked()), this, SLOT(selectEasyMode()));
+	connect(ui.normalButton, SIGNAL(clicked()), this, SLOT(selectNormalMode()));
+	connect(ui.hardButton, SIGNAL(clicked()), this, SLOT(selectHardMode()));
 	loadResources();
 
 	// timers
 	connect(&lifeTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 	score = 0;
+}
+
+void LianLianKan::resetDiffStyle() {
+	ui.easyButton->setStyleSheet(R"(
+		QPushButton { background: transparent; border: none;} 
+		QPushButton:pressed{
+			background: transparent;
+		})");
+	ui.normalButton->setStyleSheet(R"(
+		QPushButton { background: transparent; border: none;} 
+		QPushButton:pressed{
+			background: transparent;
+		})");
+	ui.hardButton->setStyleSheet(R"(
+		QPushButton { background: transparent; border: none;} 
+		QPushButton:pressed{
+			background: transparent;
+		})");
+}
+
+
+void LianLianKan::selectEasyMode() {
+	resetDiffStyle();
+	difficulty = easy;
+	ui.easyButton->setStyleSheet(R"(
+		QPushButton { background-image: url(:/LianLianKan/Images/blue.png); border: none;} 
+		QPushButton:pressed{
+			background: transparent;
+		})");
+
+}
+
+void LianLianKan::selectNormalMode() {
+	resetDiffStyle();
+	difficulty = normal;
+	ui.normalButton->setStyleSheet(R"(
+		QPushButton { background-image: url(:/LianLianKan/Images/yellow.png); border: none;} 
+		QPushButton:pressed{
+			background: transparent;
+		})");
+
+}
+
+void LianLianKan::selectHardMode() {
+	resetDiffStyle();
+	difficulty = difficult;
+	ui.hardButton->setStyleSheet(R"(
+		QPushButton { background-image: url(:/LianLianKan/Images/red.png); border: none;} 
+		QPushButton:pressed{
+			background: transparent;
+		})");
+
 }
 
 void LianLianKan::loadResources() {
@@ -67,7 +121,7 @@ void LianLianKan::updateUserInfo() {
 }
 
 void LianLianKan::drawBlocks() {
-	auto mapVec = map.makeMap(normal);
+	auto mapVec = map.makeMap(difficulty);
 	int block_count = 0;
 	for (int i = 17; i >= 0; i--)
 	{
@@ -115,7 +169,7 @@ void LianLianKan::startGame() {
 	drawBlocks();
 	ui.timeBar->setValue(0);
 	ui.timeBar->setMaximum(100);
-	lifeTimer.start(100);
+	lifeTimer.start(150);
 	ui.remainBlock->setText(QString::number(remainBlocks));
 	setBackgroundMusic();
 }

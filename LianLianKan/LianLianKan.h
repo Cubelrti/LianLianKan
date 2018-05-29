@@ -43,9 +43,14 @@ private:
 	int remainResorts;
 	int remainNavigators;
 	QMediaPlayer player;
+	Difficulty difficulty = normal;
 	int score;
 	void loadResources();
+	void resetDiffStyle();
 private slots:
+	void selectNormalMode();
+	void selectEasyMode();
+	void selectHardMode();
 	void updateTimer();
 	void navigateGame();
 	void pauseGame();
