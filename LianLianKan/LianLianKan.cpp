@@ -355,6 +355,7 @@ void LianLianKan::linking(Block * next) {
 		if (next->block_type == 8) {
 			remainResorts++;
 		}
+		updateItems();
 		remainBlocks -= 2;
 		ui.timeBar->setValue(0);
 		ui.remainBlock->setText(QString::number(remainBlocks));
