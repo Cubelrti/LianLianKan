@@ -15,6 +15,15 @@ LianLianKan::LianLianKan(QWidget *parent)
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
 	connect(ui.navigateButton, SIGNAL(clicked()), this, SLOT(navigateGame()));
 	connect(ui.pauseButton, SIGNAL(clicked()), this, SLOT(pauseGame()));
+	
+	loadResources();
+
+	// timers
+	connect(&lifeTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+	score = 0;
+}
+
+void LianLianKan::loadResources() {
 	// resource initialization
 	for (int i = 1; i <= 50; i++)
 	{
@@ -31,12 +40,6 @@ LianLianKan::LianLianKan(QWidget *parent)
 			blockPixmaps.push_back(QPixmap(images[i]).copy(rects[j]));
 		}
 	}
-	// timers
-	connect(&lifeTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-	// user init
-	username = QString::fromUtf16(u"сн©м");
-	score = 0;
-	updateUserInfo();
 }
 
 void LianLianKan::updateTimer() {

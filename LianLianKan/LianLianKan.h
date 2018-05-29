@@ -21,6 +21,8 @@ class LianLianKan : public QMainWindow
 public:
 	LianLianKan(QWidget *parent = Q_NULLPTR);
 	void removeBoom(BoomEffect * effect);
+	void updateUserInfo();
+	QString username;
 protected:
 	bool eventFilter(QObject *obj, QEvent *event);
 private:
@@ -35,15 +37,14 @@ private:
 	void drawLightning(std::vector<std::vector<int>> seq);
 	void drawBoom(Block * prev, Block * next);
 	void linking(Block * next);
-	void updateUserInfo();
 	void drawBlocks();
 	QTimer lifeTimer;
 	int remainBlocks;
 	int remainResorts;
 	int remainNavigators;
 	QMediaPlayer player;
-	QString username;
 	int score;
+	void loadResources();
 private slots:
 	void updateTimer();
 	void navigateGame();

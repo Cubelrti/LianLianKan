@@ -51,6 +51,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SignIn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LianLianKan.h">
@@ -65,9 +68,15 @@
     <QtMoc Include="BoomEffect.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="SignIn.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="LianLianKan.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SignIn.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

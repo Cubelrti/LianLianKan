@@ -2,6 +2,7 @@
   <qresource prefix="LianLianKan">
     <file>Images/Background.jpg</file>
     <file>Images/boom.png</file>
+    <file>Images/glow.gif</file>
     <file>Images/Client.ico</file>
     <file>Images/Cursor.png</file>
     <file>Images/Elec1.png</file>
