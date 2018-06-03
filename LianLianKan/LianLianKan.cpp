@@ -245,7 +245,7 @@ void LianLianKan::navigateGame() {
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq, std::vector<int> lightningSeq) {
 	lightningSequence.clear();
-	if (seq.size() == 0 || seq.size() == 0 || lightningSeq.size() == 0) return;
+	if (seq.size() == 0 || seq.size() == 2 || lightningSeq.size() == 0) return;
 	QSound::play("./Sounds/Elec.wav");
 	int count = 1;
 	for (int i = 0; i < lightningSeq.size(); i++) {

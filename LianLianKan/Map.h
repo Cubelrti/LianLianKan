@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-enum Difficulty{easy, normal, difficult};
-enum MYDIRECTION { U, D, T, L, R };
+enum Difficulty { easy, normal, difficult };
+enum MYDIRECTION { U = 1, D = 2, L = 4, R = 5 };
 
 using namespace std;
 class Map
@@ -29,6 +29,6 @@ private:
 	int find_right_number(int alpha, int beta, int x = -1, int y = -1);
 	int get_direction_lightning(int pre, int post);
 	int get_direction_point(vector<int> vct);
-	
+
 };
 
