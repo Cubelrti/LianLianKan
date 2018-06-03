@@ -1,12 +1,12 @@
 #include "Lightning.h"
 
 const QString images[6] = {
-	":/LianLianKan/Elec1.png",
-	":/LianLianKan/Elec2.png",
-	":/LianLianKan/Elec3.png",
-	":/LianLianKan/Elec4.png",
-	":/LianLianKan/Elec5.png",
-	":/LianLianKan/Elec6.png",
+	":/LianLianKan/Images/Elec1.png",
+	":/LianLianKan/Images/Elec2.png",
+	":/LianLianKan/Images/Elec3.png",
+	":/LianLianKan/Images/Elec4.png",
+	":/LianLianKan/Images/Elec5.png",
+	":/LianLianKan/Images/Elec6.png",
 };
 
 const QRect rects[2] = {
@@ -17,8 +17,8 @@ const QRect rects[2] = {
 Lightning::Lightning(QObject *parent, DIRECTION direction, int x, int y)
 	: QObject(parent), direction(direction)
 {
-	const int X_OFFSET = 10;
-	const int Y_OFFSET = 155;
+	const int X_OFFSET = 31;
+	const int Y_OFFSET = 175;
 	const int X_PER_BLOCK = 30;
 	const int Y_PER_BLOCK = 35;
 
