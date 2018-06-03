@@ -13,6 +13,48 @@ Map::~Map() {
 
 }
 
+int Map::get_direction_lightning(int pre, int post) {
+	if (abs(pre - post) <= 1) {
+		if (pre == D || pre == U)
+			return UD;
+		else
+			return LR;
+	}
+	else if ((pre == R && post == U) || (pre == D && post == L))
+		return RD;
+	else if ((pre == R && post == D) || (pre == U && post == L))
+		return RU;
+	else if ((pre == L && post == U) || (pre == D && post == R))
+		return LD;
+	else if ((pre == L && post == D) || (pre == U && post == R))
+		return LU;
+}
+
+int Map::get_direction_point(vector<int> vct) {
+	if (vct[0] == 1 && vct[1] == 0) return D;
+	if (vct[0] == -1 && vct[1] == 0) return U;
+	if (vct[0] == 0 && vct[1] == 1) return R;
+	if (vct[0] == 0 && vct[1] == -1) return L;
+}
+
+vector<int> Map::getDirections(vector<vector<int>> route) {
+	vector<int> directionVct;
+	vector<int> order;
+	if (route.empty())
+		return directionVct;
+	int diff_x;
+	int diff_y;
+	for (int i = 0; i < route.size() - 1; i++) {
+		diff_x = route[i + 1][0] - route[i][0];
+		diff_y = route[i + 1][1] - route[i][1];
+		order.push_back(get_direction_point({ diff_x, diff_y }));
+	}
+	for (int i = 0; i < order.size() - 1; i++) {
+		directionVct.push_back(get_direction_lightning(order[i], order[i + 1]));
+	}
+	return directionVct;
+}
+
 bool Map::full_true(vector<bool> flags) {
 	for (auto flag : flags)
 		if (!flag) return false;
