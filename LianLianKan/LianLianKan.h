@@ -34,7 +34,7 @@ private:
 	std::vector<QPixmap> blockPixmaps;
 	Block *prev = nullptr;
 	Map map;
-	void drawLightning(std::vector<std::vector<int>> seq);
+	void drawLightning(std::vector<std::vector<int>> seq, std::vector<int> lightningSeq);
 	void drawBoom(Block * prev, Block * next);
 	void linking(Block * next);
 	void drawBlocks();
