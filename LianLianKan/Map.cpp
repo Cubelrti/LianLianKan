@@ -28,6 +28,7 @@ int Map::get_direction_lightning(int pre, int post) {
 		return LD;
 	else if ((pre == L && post == D) || (pre == U && post == R))
 		return LU;
+	return -1;
 }
 
 int Map::get_direction_point(vector<int> vct) {
@@ -35,6 +36,7 @@ int Map::get_direction_point(vector<int> vct) {
 	if (vct[0] == -1 && vct[1] == 0) return U;
 	if (vct[0] == 0 && vct[1] == 1) return R;
 	if (vct[0] == 0 && vct[1] == -1) return L;
+	return -1;
 }
 
 vector<int> Map::getDirections(vector<vector<int>> route) {
