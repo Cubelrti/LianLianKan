@@ -207,11 +207,16 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BoomEffect.cpp" />
+    <ClCompile Include="EffectControl.cpp" />
+    <ClCompile Include="GameControl.cpp" />
+    <ClCompile Include="ItemControl.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="LianLianKan.cpp" />
     <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OnlineControl.cpp" />
     <ClCompile Include="SignIn.cpp" />
+    <ClCompile Include="UIExtensions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LianLianKan.h" />
