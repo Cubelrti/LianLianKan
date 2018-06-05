@@ -10,6 +10,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	ui.graphicsView->setScene(scene);
 	ui.graphicsView->installEventFilter(this);
 	scene->setSceneRect(0, 0, 791, 571);
+	ui.opponentState->hide();
 	// buttons
 	connect(ui.startButton, SIGNAL(clicked()), this, SLOT(startGame()));
 	connect(ui.resortButton, SIGNAL(clicked()), this, SLOT(resortGame()));
@@ -20,6 +21,9 @@ LianLianKan::LianLianKan(QWidget *parent)
 	connect(ui.hardButton, SIGNAL(clicked()), this, SLOT(selectHardMode()));
 	connect(ui.versusButton, SIGNAL(clicked()), this, SLOT(versusGame()));
 	connect(&websocket, &QWebSocket::textMessageReceived, this, &LianLianKan::updateVersus);
+	connect(&websocket, &QWebSocket::connected, this, [&] {
+		ui.statusBar->showMessage("Connected to server.");
+	});
 
 	loadResources();
 	// timers
@@ -85,6 +89,7 @@ void LianLianKan::updateVersus(QString message) {
 	ui.statusBar->showMessage(message);
 	auto tokens = message.split('_');
 	if (message.contains("GAME_START")) {
+		ui.opponentState->setText(QString::fromUtf16(u"对手剩余：")+QString::number(remainBlocks));
 		isNetwork = true;
 		auto mapVec = map.makeMap(tokens[2].toInt());
 		QSound::play("./Sounds/Start.wav");
@@ -124,10 +129,40 @@ void LianLianKan::updateVersus(QString message) {
 			isGameNow = false;
 		}
 	}
+	if (message.contains("ITEM")) {
+		int id = tokens[2].toInt();
+		if (tokens[1] == "MIRROR" && id != netId) {
+			QSound::play("./Sounds/item.wav");
+			prev = nullptr;
+			scene->clear();
+			lightningSequence.clear();
+			auto mapVec = map.mirror();
+			for (int i = 17; i >= 0; i--)
+			{
+				for (int j = 0; j < 10; j++)
+				{
+					if (mapVec[j][i] == 0) continue;
+					int block_type = mapVec[j][i] - 1;
+					Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
+					scene->addItem(_block);
+				}
+			}
+		}
+		if (tokens[1] == "TIME" && id != netId) {
+			lifeTimer.setInterval(75);
+		}
+	}
 }
 void LianLianKan::versusGame() {
-	websocket.sendTextMessage("MATCH");
-	ui.statusBar->showMessage("Now matching opponent...");
+	if (websocket.state() == QAbstractSocket::SocketState::ConnectedState) {
+		ui.opponentState->show();
+		ui.opponentState->setText(QString::fromUtf16(u"对手搜索中..."));
+		websocket.sendTextMessage("MATCH");
+		ui.statusBar->showMessage("Now matching opponent...");
+	}
+	else {
+		ui.statusBar->showMessage("Connection failed.");
+	}
 }
 
 void LianLianKan::loadResources() {
@@ -220,6 +255,7 @@ void LianLianKan::endGame() {
 }
 
 void LianLianKan::startGame() {
+	ui.opponentState->hide();
 	isNetwork = false;
 	isGameNow = true;
 	auto mapVec = map.makeMap(difficulty);
@@ -349,6 +385,16 @@ void LianLianKan::linking(Block * next) {
 		if (next->block_type == 8) {
 			remainResorts++;
 		}
+		if (next->block_type == 25 && isNetwork) {
+			websocket.sendTextMessage("ITEM_MIRROR_" + QString::number(netId));
+		}
+		if (next->block_type == 29 && isNetwork) {
+			websocket.sendTextMessage("ITEM_TIME_" + QString::number(netId));
+		}
+		if (next->block_type == 28 && isNetwork) {
+			// websocket.sendTextMessage("ITEM_BOOM_" + QString::number(netId));
+		}
+		//if(next->block_type == )
 		updateItems();
 		remainBlocks -= 2;
 		if (isNetwork) {
