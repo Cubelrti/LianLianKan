@@ -20,9 +20,11 @@ public:
 	vector<vector<int>> connection(int x1, int y1, int x2, int y2, bool promptFlag = false);
 	vector<vector<int>> makeMap(Difficulty level);
 	vector<vector<int>> makeMap(int order);
-	vector<int> getDirections(vector<vector<int>> route);
+	vector<vector<int>> mirror();
 	vector<vector<int>> rearrange();
 	vector<vector<int>> prompt();
+	vector<int> getDirections(vector<vector<int>> route);
+
 private:
 	bool isLineLinkable(int x1, int y1, int x2, int y2);
 	vector<vector<int>> map;

@@ -87,7 +87,7 @@ vector<vector<int>> Map::makeMap(int order) {
 	vector<vector<int>> position;
 	vector<int> frequency(41, 0);
 	srand((unsigned)time(NULL));
-	
+
 	string filename = "./Maps/Map" + std::to_string(order) + ".txt";
 	fstream readMap;
 	readMap.open(filename.c_str());
@@ -146,6 +146,19 @@ vector<vector<int>> Map::makeMap(int order) {
 		map[position[j][0]][position[j][1]] = rand_element;
 		if (full_true(flags)) break;
 	}
+	return map;
+}
+
+vector<vector<int>> Map::mirror()
+{
+	bool flags[10][18] = { false };
+	for (int i = 0; i < HEIGHT; i++)
+		for (int j = 0; j < WIDTH; j++)
+			if (map[i][j] && !flags[i][j]) {
+				std::swap(map[i][j], map[i][WIDTH - j - 1]);
+				flags[i][j] = true;
+				flags[i][WIDTH - j - 1] = true;
+			}
 	return map;
 }
 
