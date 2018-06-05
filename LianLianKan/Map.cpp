@@ -81,19 +81,13 @@ bool Map::isLineLinkable(int x1, int y1, int x2, int y2) {
 	return true;
 }
 
-vector<vector<int>> Map::makeMap(Difficulty level) {
+vector<vector<int>> Map::makeMap(int order) {
 	map.clear();
 	vector<bool> flags;
 	vector<vector<int>> position;
 	vector<int> frequency(41, 0);
 	srand((unsigned)time(NULL));
-	int order = 0;
-	if (level == easy)
-		order = 1 + (rand() % 4);
-	else if (level == normal)
-		order = 5 + (rand() % 8);
-	else if (level == difficult)
-		order = 13 + (rand() % 4);
+	
 	string filename = "./Maps/Map" + std::to_string(order) + ".txt";
 	fstream readMap;
 	readMap.open(filename.c_str());
@@ -153,6 +147,18 @@ vector<vector<int>> Map::makeMap(Difficulty level) {
 		if (full_true(flags)) break;
 	}
 	return map;
+}
+
+vector<vector<int>> Map::makeMap(Difficulty level) {
+	srand((unsigned)time(NULL));
+	int order = 0;
+	if (level == easy)
+		order = 1 + (rand() % 4);
+	else if (level == normal)
+		order = 5 + (rand() % 8);
+	else if (level == hard)
+		order = 13 + (rand() % 4);
+	return makeMap(order);
 }
 
 vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptFlag) {

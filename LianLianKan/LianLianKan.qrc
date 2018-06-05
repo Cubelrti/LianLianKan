@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="LianLianKan">
+    <file>Images/lose.png</file>
+    <file>Images/win.png</file>
+    <file>Images/opponent.png</file>
+    <file>Images/versus.png</file>
     <file>Images/blue.png</file>
     <file>Images/red.png</file>
     <file>Images/yellow.png</file>

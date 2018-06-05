@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-enum Difficulty { easy, normal, difficult };
+enum Difficulty { easy, normal, hard };
 enum MYDIRECTION { U = 1, D = 2, L = 4, R = 5 };
 
 using namespace std;
@@ -19,6 +19,7 @@ public:
 	~Map();
 	vector<vector<int>> connection(int x1, int y1, int x2, int y2, bool promptFlag = false);
 	vector<vector<int>> makeMap(Difficulty level);
+	vector<vector<int>> makeMap(int order);
 	vector<int> getDirections(vector<vector<int>> route);
 	vector<vector<int>> rearrange();
 	vector<vector<int>> prompt();

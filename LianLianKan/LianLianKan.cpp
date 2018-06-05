@@ -4,7 +4,7 @@ LianLianKan::LianLianKan(QWidget *parent)
 	: QMainWindow(parent)
 {
 	// ui'cing
-	setFixedSize(791, 571);
+	setFixedSize(790, 598);
 	ui.setupUi(this);
 	scene = new QGraphicsScene(this);
 	ui.graphicsView->setScene(scene);
@@ -18,12 +18,17 @@ LianLianKan::LianLianKan(QWidget *parent)
 	connect(ui.easyButton, SIGNAL(clicked()), this, SLOT(selectEasyMode()));
 	connect(ui.normalButton, SIGNAL(clicked()), this, SLOT(selectNormalMode()));
 	connect(ui.hardButton, SIGNAL(clicked()), this, SLOT(selectHardMode()));
-	loadResources();
+	connect(ui.versusButton, SIGNAL(clicked()), this, SLOT(versusGame()));
+	connect(&websocket, &QWebSocket::textMessageReceived, this, &LianLianKan::updateVersus);
 
+	loadResources();
 	// timers
 	connect(&lifeTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 	score = 0;
+	websocket.open(QUrl("ws://47.95.3.113:8888"));
 }
+
+
 
 void LianLianKan::resetDiffStyle() {
 	ui.easyButton->setStyleSheet(R"(
@@ -42,7 +47,6 @@ void LianLianKan::resetDiffStyle() {
 			background: transparent;
 		})");
 }
-
 
 void LianLianKan::selectEasyMode() {
 	resetDiffStyle();
@@ -68,7 +72,7 @@ void LianLianKan::selectNormalMode() {
 
 void LianLianKan::selectHardMode() {
 	resetDiffStyle();
-	difficulty = difficult;
+	difficulty = hard;
 	ui.hardButton->setStyleSheet(R"(
 		QPushButton { background-image: url(:/LianLianKan/Images/red.png); border: none;} 
 		QPushButton:pressed{
@@ -77,8 +81,58 @@ void LianLianKan::selectHardMode() {
 
 }
 
+void LianLianKan::updateVersus(QString message) {
+	ui.statusBar->showMessage(message);
+	auto tokens = message.split('_');
+	if (message.contains("GAME_START")) {
+		isNetwork = true;
+		auto mapVec = map.makeMap(tokens[2].toInt());
+		QSound::play("./Sounds/Start.wav");
+		prev = nullptr;
+		remainNavigators = 3;
+		remainResorts = 2;
+		updateItems();
+		scene->clear();
+		lightningSequence.clear();
+		drawBlocks(mapVec);
+		ui.timeBar->setValue(0);
+		ui.timeBar->setMaximum(100);
+		lifeTimer.start(150);
+		ui.remainBlock->setText(QString::number(remainBlocks));
+		setBackgroundMusic();
+	}
+	if (message.contains("USERTYPE")) {
+		netId = tokens[1].toInt();
+	}
+	if (message.contains("ACTION")) {
+		int id = tokens[1].toInt();
+		int remain = tokens[2].toInt();
+		if (id != netId) {
+			ui.opponentState->setText(QString::fromUtf16(u"对手剩余：" )+ tokens[2]);
+		}
+		if (remain == 0) {
+			endGame();
+		}
+	}
+	if (message.contains("FAIL")) {
+		int id = tokens[1].toInt();
+		if (id != netId) {
+			QGraphicsPixmapItem *win = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/win.png"));
+			win->setPos(175, 200);
+			scene->addItem(win);
+			lifeTimer.stop();
+			isGameNow = false;
+		}
+	}
+}
+void LianLianKan::versusGame() {
+	websocket.sendTextMessage("MATCH");
+	ui.statusBar->showMessage("Now matching opponent...");
+}
+
 void LianLianKan::loadResources() {
 	// resource initialization
+	ui.statusBar->showMessage("Loading explosions...");
 	for (int i = 1; i <= 50; i++)
 	{
 		boomPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png").scaled(60, 60));
@@ -87,6 +141,7 @@ void LianLianKan::loadResources() {
 	{
 		fireworkPixmaps.push_back(QPixmap(":/Boom/BoomEffect/explosion_" + QString::number(i) + ".png"));
 	}
+	ui.statusBar->showMessage("Loading blocks...");
 	for (int i = 0; i < 10; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -94,6 +149,7 @@ void LianLianKan::loadResources() {
 			blockPixmaps.push_back(QPixmap(images[i]).copy(rects[j]));
 		}
 	}
+	ui.statusBar->showMessage("Resources initialized.");
 }
 
 void LianLianKan::updateTimer() {
@@ -108,6 +164,7 @@ void LianLianKan::updateTimer() {
 }
 
 void LianLianKan::pauseGame() {
+	if (!isGameNow) return;
 	if (lifeTimer.isActive()) {
 		lifeTimer.stop();
 	}
@@ -117,11 +174,10 @@ void LianLianKan::pauseGame() {
 void LianLianKan::updateUserInfo() {
 	QString user_info = QString::fromUtf16(u"昵称：") + username
 		+ "\n" + QString::fromUtf16(u"分数：") + QString::number(score);
-	ui.label->setText(user_info);
+	ui.userInfo->setText(user_info);
 }
 
-void LianLianKan::drawBlocks() {
-	auto mapVec = map.makeMap(difficulty);
+void LianLianKan::drawBlocks(vector<vector<int>> mapVec) {
 	int block_count = 0;
 	for (int i = 17; i >= 0; i--)
 	{
@@ -138,6 +194,7 @@ void LianLianKan::drawBlocks() {
 }
 
 void LianLianKan::endGame() {
+	isGameNow = false;
 	QSound::play("./Sounds/boom.wav");
 	QSound::play("./Sounds/end.wav");
 	player.stop();
@@ -150,8 +207,12 @@ void LianLianKan::endGame() {
 		updateUserInfo();
 	}
 	else {
+		websocket.sendTextMessage("FAIL_" + QString::number(netId));
 		ui.remainBlock->setText(QString::fromUtf16(u"游戏结束！"));
 		score -= 10;
+		QGraphicsPixmapItem *lose = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/lose.png"));
+		lose->setPos(175, 200);
+		scene->addItem(lose);
 		updateUserInfo();
 	}
 	scene->addItem(ex_boom);
@@ -159,6 +220,9 @@ void LianLianKan::endGame() {
 }
 
 void LianLianKan::startGame() {
+	isNetwork = false;
+	isGameNow = true;
+	auto mapVec = map.makeMap(difficulty);
 	QSound::play("./Sounds/Start.wav");
 	prev = nullptr;
 	remainNavigators = 3;
@@ -166,7 +230,7 @@ void LianLianKan::startGame() {
 	updateItems();
 	scene->clear();
 	lightningSequence.clear();
-	drawBlocks();
+	drawBlocks(mapVec);
 	ui.timeBar->setValue(0);
 	ui.timeBar->setMaximum(100);
 	lifeTimer.start(150);
@@ -245,16 +309,13 @@ void LianLianKan::navigateGame() {
 
 void LianLianKan::drawLightning(std::vector<std::vector<int>> seq, std::vector<int> lightningSeq) {
 	lightningSequence.clear();
-	if (seq.size() == 0 || seq.size() == 2 || lightningSeq.size() == 0) return;
 	QSound::play("./Sounds/Elec.wav");
+	if (seq.size() == 0 || seq.size() == 2 || lightningSeq.size() == 0) return;
 	int count = 1;
 	for (int i = 0; i < lightningSeq.size(); i++) {
 		lightningSequence.push_back(new Lightning(this, (DIRECTION)lightningSeq[i], seq[count][1], seq[count][0]));
 		count++;
 	}
-
-	//lightningSequence.push_back(new Lightning(this, static_cast<DIRECTION>(rand() % 6), prev->x, prev->y));
-	//lightningSequence.push_back(new Lightning(this, static_cast<DIRECTION>(rand() % 6), next->x, next->y));
 	for (auto it : lightningSequence) scene->addItem(it);
 }
 
@@ -290,6 +351,9 @@ void LianLianKan::linking(Block * next) {
 		}
 		updateItems();
 		remainBlocks -= 2;
+		if (isNetwork) {
+			websocket.sendTextMessage("ACTION_" + QString::number(netId) + "_" + QString::number(remainBlocks));
+		}
 		ui.timeBar->setValue(0);
 		ui.remainBlock->setText(QString::number(remainBlocks));
 		prev->deselect();

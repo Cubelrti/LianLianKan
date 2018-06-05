@@ -5,7 +5,6 @@
 BoomEffect::BoomEffect(QObject *parent, int x, int y, std::vector<QPixmap> &pixmapSource)
 	: QObject(parent), pixmap(pixmapSource)
 {
-
 	const int X_OFFSET = 21;
 	const int Y_OFFSET = 162;
 	const int X_PER_BLOCK = 30;

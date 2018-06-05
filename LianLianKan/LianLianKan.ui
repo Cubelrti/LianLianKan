@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>798</width>
-    <height>576</height>
+    <width>790</width>
+    <height>598</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -183,7 +183,7 @@ margin-bottom: 1px;
      <string>0</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="userInfo">
     <property name="geometry">
      <rect>
       <x>630</x>
@@ -393,6 +393,58 @@ background: transparent;
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="versusButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>490</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton { background: transparent; border: none;} 
+QPushButton:hover { 
+background-image: url(:/LianLianKan/Images/versus.png);
+background-repeat: no-repeat;
+margin-top: -4px;
+margin-left: -4px;
+}
+QPushButton:pressed{
+background: transparent;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="opponentState">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>111</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/LianLianKan/Images/opponent.png);
+color: white;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(44, 88, 160);
+color: white;</string>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

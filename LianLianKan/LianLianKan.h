@@ -13,6 +13,7 @@
 #include <QSound>
 #include <QGraphicsTextItem>
 #include <QMediaPlaylist>
+#include <QtWebSockets/QtWebSockets>
 
 class LianLianKan : public QMainWindow
 {
@@ -37,7 +38,7 @@ private:
 	void drawLightning(std::vector<std::vector<int>> seq, std::vector<int> lightningSeq);
 	void drawBoom(Block * prev, Block * next);
 	void linking(Block * next);
-	void drawBlocks();
+	void drawBlocks(vector<vector<int>> mapVec);
 	QTimer lifeTimer;
 	int remainBlocks;
 	int remainResorts;
@@ -47,10 +48,16 @@ private:
 	int score;
 	void loadResources();
 	void resetDiffStyle();
+	QWebSocket websocket;
+	bool isGameNow = false;
+	bool isNetwork = false;
+	int netId = -1;
 private slots:
 	void selectNormalMode();
 	void selectEasyMode();
 	void selectHardMode();
+	void updateVersus(QString message);
+	void versusGame();
 	void updateTimer();
 	void navigateGame();
 	void pauseGame();
