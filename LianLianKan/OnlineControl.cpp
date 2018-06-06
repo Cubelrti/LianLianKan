@@ -4,6 +4,7 @@ void LianLianKan::updateVersus(QString message) {
 	ui.statusBar->showMessage(message);
 	auto tokens = message.split('_');
 	if (message.contains("GAME_START")) {
+		ui.versusButton->setDisabled(false);
 		ui.opponentState->setText(QString::fromUtf16(u"对手剩余：") + QString::number(remainBlocks));
 		isNetwork = true;
 		auto mapVec = map.makeMap(tokens[2].toInt());
@@ -69,6 +70,7 @@ void LianLianKan::updateVersus(QString message) {
 	}
 }
 void LianLianKan::versusGame() {
+	ui.versusButton->setDisabled(true);
 	if (websocket.state() == QAbstractSocket::SocketState::ConnectedState) {
 		ui.opponentState->show();
 		ui.opponentState->setText(QString::fromUtf16(u"对手搜索中..."));
