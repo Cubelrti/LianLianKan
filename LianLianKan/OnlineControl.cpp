@@ -5,7 +5,6 @@ void LianLianKan::updateVersus(QString message) {
 	auto tokens = message.split('_');
 	if (message.contains("GAME_START")) {
 		ui.versusButton->setDisabled(false);
-		ui.opponentState->setText(QString::fromUtf16(u"对手剩余：") + QString::number(remainBlocks));
 		isNetwork = true;
 		auto mapVec = map.makeMap(tokens[2].toInt());
 		QSound::play("./Sounds/Start.wav");
@@ -21,6 +20,7 @@ void LianLianKan::updateVersus(QString message) {
 		lifeTimer.start(150);
 		ui.remainBlock->setText(QString::number(remainBlocks));
 		setBackgroundMusic();
+		ui.opponentState->setText(QString::fromUtf16(u"对手剩余：") + QString::number(remainBlocks));
 	}
 	if (message.contains("USERTYPE")) {
 		netId = tokens[1].toInt();
