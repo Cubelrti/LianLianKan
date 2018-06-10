@@ -415,28 +415,30 @@ vector<vector<int>> Map::obstacle()
 {
 	srand((unsigned)time(NULL));
 	vector<vector<int>> position;
-	vector<bool> flags;
+	vector<bool> props_flags(45, false);
+	vector<bool> blank_flags;
 	int total = 3;
 	for (int i = 0; i < HEIGHT; i++)
 		for (int j = 0; j < WIDTH; j++)
 			if (!map[i][j]) {
 				position.push_back({ i, j });
-				flags.push_back(false);
+				blank_flags.push_back(false);
 			}
 	int len = position.size();
 	int tmp_len = len;
 	while (total && tmp_len) {
 		int element1 = rand() % len;
-		while (flags[element1] &&
+		while (blank_flags[element1] &&
 			!around_block(position[element1][0], position[element1][1]))
 			element1 = rand() % len;
 		int element2 = rand() % len;
-		while (flags[element2] && element2 == element1 &&
+		while (blank_flags[element2] && element2 == element1 &&
 			!around_block(position[element2][0], position[element2][1]))
 			element2 = rand() % len;
 		int rand_element = 1 + (rand() % 44);
-		while(in_props(rand_element))
+		while (in_props(rand_element) && props_flags[rand_element])
 			rand_element = 1 + (rand() % 44);
+		props_flags[rand_element] = true;
 		map[position[element1][0]][position[element1][1]] = rand_element;
 		map[position[element2][0]][position[element2][1]] = rand_element;
 		total--;
