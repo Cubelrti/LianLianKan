@@ -3,6 +3,7 @@
 #include "Lightning.h"
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include <fstream>
 #include <iostream>
 #include <string>

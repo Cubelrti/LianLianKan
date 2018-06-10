@@ -375,12 +375,37 @@ vector<vector<int>> Map::rearrange() {
 		}
 
 	int len = position.size();
+	int tmp_len = len;
 	for (int i = 1; i < 45; i++) {
 		while (frequencies[i]) {
+			int count = 0;
+			int tmp = 0;
+			int dis = 1;
 			int element1 = rand() % len;
-			while (flags[element1]) element1 = rand() % len;
+			tmp = element1;
+			while (flags[element1]) {
+				if (count <= 1) {
+					element1 = abs((tmp + (dis * (int)pow(-1, count))) % len);
+					count++;
+					continue;
+				}
+				count = 0;
+				dis++;
+				element1 = element1 >= 0 ? element1 : 0;
+			}
+			count = 0;
+			dis = 1;
 			int element2 = rand() % len;
-			while (element2 == element1 || flags[element2]) element2 = rand() % len;
+			tmp = element2;
+			while (element2 == element1 || flags[element2]) {
+				if (count <= 1) {
+					element2 = abs((tmp + (dis * (int)pow(-1, count))) % len);
+					count++;
+					continue;
+				}
+				count = 0;
+				dis++;
+			}
 			flags[element1] = true;
 			flags[element2] = true;
 			map[position[element1][0]][position[element1][1]] = i;
