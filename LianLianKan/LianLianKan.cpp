@@ -66,7 +66,7 @@ void LianLianKan::setBackgroundMusic()
 
 
 void LianLianKan::linking(Block * next) {
-	if (remainBlocks == 0 || !lifeTimer.isActive()) {
+	if (remainBlocks == 0 || !lifeTimer.isActive() || isGameNow == false) {
 		return;
 	}
 	if (prev) {
@@ -93,6 +93,16 @@ void LianLianKan::linking(Block * next) {
 		if (next->block_type == 28 && isNetwork) {
 			// websocket.sendTextMessage("ITEM_BOOM_" + QString::number(netId));
 		}
+		if (next->block_type == 43 && isNetwork) {
+			websocket.sendTextMessage("ITEM_OBSTACLE_" + QString::number(netId));
+		}
+		if (next->block_type == 41 && isNetwork) {
+			websocket.sendTextMessage("ITEM_HAND_" + QString::number(netId));
+		}
+		if (next->block_type == 40 && isNetwork) {
+			websocket.sendTextMessage("ITEM_BLIND_" + QString::number(netId));
+		}
+
 		//if(next->block_type == )
 		updateItems();
 		remainBlocks -= 2;
@@ -142,17 +152,17 @@ bool LianLianKan::eventFilter(QObject *obj, QEvent *event)
 {
 	if (event->type() == QEvent::MouseButtonPress) {
 		QMouseEvent *e = static_cast<QMouseEvent *>(event);
-		if (auto *item = dynamic_cast<Block *>(ui.graphicsView->itemAt(e->pos()))) {
-			if (item == nullptr) {
-				return false;
+		auto items = ui.graphicsView->items(e->pos());
+		for (auto item : items) {
+			Block * block = dynamic_cast<Block *>(item);
+			if (block == nullptr) {
+				continue;
 			}
 			QSound::play("./Sounds/Sel.wav");
-			linking(item);
+			linking(block);
 			return true;
 		}
-		else {
-			return false;
-		}
+		
 
 		return false;
 	}

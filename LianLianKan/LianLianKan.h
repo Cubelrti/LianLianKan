@@ -57,6 +57,10 @@ private slots:
 	void selectEasyMode();
 	void selectHardMode();
 	void updateVersus(QString message);
+	void HandGame();
+	void BlindGame();
+	void MirrorGame();
+	void ObstacleGame();
 	void versusGame();
 	void updateTimer();
 	void navigateGame();

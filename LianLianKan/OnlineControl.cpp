@@ -48,27 +48,24 @@ void LianLianKan::updateVersus(QString message) {
 	if (message.contains("ITEM")) {
 		int id = tokens[2].toInt();
 		if (tokens[1] == "MIRROR" && id != netId) {
-			QSound::play("./Sounds/item.wav");
-			prev = nullptr;
-			scene->clear();
-			lightningSequence.clear();
-			auto mapVec = map.mirror();
-			for (int i = 17; i >= 0; i--)
-			{
-				for (int j = 0; j < 10; j++)
-				{
-					if (mapVec[j][i] == 0) continue;
-					int block_type = mapVec[j][i] - 1;
-					Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
-					scene->addItem(_block);
-				}
-			}
+			MirrorGame();
 		}
 		if (tokens[1] == "TIME" && id != netId) {
 			lifeTimer.setInterval(75);
 		}
+		if (tokens[1] == "BLIND" && id != netId) {
+			BlindGame();
+		}
+		if (tokens[1] == "OBSTACLE" && id != netId) {
+			ObstacleGame();
+		}
+		if (tokens[1] == "HAND" && id != netId) {
+			HandGame();
+		}
 	}
 }
+
+
 void LianLianKan::versusGame() {
 	ui.versusButton->setDisabled(true);
 	if (websocket.state() == QAbstractSocket::SocketState::ConnectedState) {

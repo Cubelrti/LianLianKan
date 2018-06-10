@@ -25,6 +25,67 @@ void LianLianKan::navigateGame() {
 	updateItems();
 }
 
+
+void LianLianKan::MirrorGame()
+{
+	QSound::play("./Sounds/item.wav");
+	prev = nullptr;
+	scene->clear();
+	lightningSequence.clear();
+	auto mapVec = map.mirror();
+	for (int i = 17; i >= 0; i--)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			if (mapVec[j][i] == 0) continue;
+			int block_type = mapVec[j][i] - 1;
+			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
+			scene->addItem(_block);
+		}
+	}
+}
+
+void LianLianKan::ObstacleGame()
+{
+	QSound::play("./Sounds/item.wav");
+	prev = nullptr;
+	scene->clear();
+	lightningSequence.clear();
+	auto mapVec = map.obstacle();
+	for (int i = 17; i >= 0; i--)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			if (mapVec[j][i] == 0) continue;
+			int block_type = mapVec[j][i] - 1;
+			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
+			scene->addItem(_block);
+		}
+	}
+}
+
+void LianLianKan::HandGame()
+{
+	QSound::play("./Sounds/item.wav");
+	isGameNow = false;
+	QTimer::singleShot(5000, this, [=] {
+		isGameNow = true;
+	});
+}
+
+void LianLianKan::BlindGame()
+{
+	QSound::play("./Sounds/item.wav");
+	QGraphicsRectItem *blind = new QGraphicsRectItem(0, 150, 600, 385);
+	blind->setBrush(QBrush(Qt::black));
+	blind->setOpacity(0.85);
+	scene->addItem(blind);
+	QTimer::singleShot(5000, this, [=] {
+		if (blind == nullptr) return;
+		scene->removeItem(blind);
+	});
+}
+
 void LianLianKan::resortGame() {
 	if (remainBlocks == 0) {
 		return;

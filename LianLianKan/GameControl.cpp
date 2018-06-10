@@ -25,7 +25,7 @@ void LianLianKan::endGame() {
 		updateUserInfo();
 	}
 	else {
-		websocket.sendTextMessage("FAIL_" + QString::number(netId));
+		if( isNetwork ) websocket.sendTextMessage("FAIL_" + QString::number(netId));
 		ui.remainBlock->setText(QString::fromUtf16(u"”Œœ∑Ω· ¯£°"));
 		score -= 10;
 		QGraphicsPixmapItem *lose = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/lose.png"));
@@ -58,7 +58,7 @@ void LianLianKan::startGame() {
 }
 
 void LianLianKan::pauseGame() {
-	if (!isGameNow) return;
+	if (!isGameNow || isNetwork) return;
 	if (lifeTimer.isActive()) {
 		lifeTimer.stop();
 	}
