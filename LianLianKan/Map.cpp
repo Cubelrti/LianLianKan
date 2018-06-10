@@ -102,6 +102,13 @@ bool Map::isLineLinkable(int x1, int y1, int x2, int y2) {
 }
 
 vector<vector<int>> Map::makeMap(int order) {
+	int number_of_props = 0;
+	if (order >= 1 && order <= 4)
+		number_of_props = 3;
+	else if (order >= 5 && order <= 12)
+		number_of_props = 4;
+	else if (order >= 13)
+		number_of_props = 5;
 	map.clear();
 	vector<bool> flags;
 	vector<vector<int>> position;
@@ -142,6 +149,20 @@ vector<vector<int>> Map::makeMap(int order) {
 	}
 	int len = position.size();
 	int tmp_len = len;
+	while (number_of_props) {
+		int element1 = rand() % len;
+		while (flags[element1])
+			element1 = rand() % len;
+		int element2 = rand() % len;
+		while (flags[element2] || element1 == element2)
+			element2 = rand() % len;
+		flags[element1] = true;
+		flags[element2] = true;
+		int rand_props = rand() % props.size();
+		map[position[element1][0]][position[element1][1]] = props[rand_props];
+		map[position[element2][0]][position[element2][1]] = props[rand_props];
+		number_of_props--;
+	}
 	for (int i = 0; i < len; i++) {
 		if (flags[i]) {
 			tmp_len--;
@@ -154,15 +175,19 @@ vector<vector<int>> Map::makeMap(int order) {
 		flags[j] = true;
 		tmp_len--;
 		int rand_element = 1 + (rand() % 44);
-		int maxProps;
+		int maxProps = 3;
 		while (1) {
-			if (in_props(rand_element))
-				maxProps = 1;
-			else
-				maxProps = 3;
-			if (frequency[rand_element] < maxProps) {
-				frequency[rand_element]++;
-				break;
+			//if (in_props(rand_element))
+			//	maxProps = 1;
+			//else
+			//	maxProps = 3;
+			if (!in_props(rand_element)) {
+				if (frequency[rand_element] < maxProps) {
+					frequency[rand_element]++;
+					break;
+				}
+				else
+					rand_element = 1 + (rand() % 44);
 			}
 			else
 				rand_element = 1 + (rand() % 44);
