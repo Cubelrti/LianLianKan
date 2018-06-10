@@ -6,6 +6,7 @@ void LianLianKan::updateVersus(QString message) {
 	if (message.contains("GAME_START")) {
 		ui.versusButton->setDisabled(false);
 		isNetwork = true;
+		isGameNow = true;
 		auto mapVec = map.makeMap(tokens[2].toInt());
 		QSound::play("./Sounds/Start.wav");
 		prev = nullptr;
