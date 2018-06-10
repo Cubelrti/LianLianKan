@@ -25,11 +25,40 @@ void LianLianKan::navigateGame() {
 	updateItems();
 }
 
+void LianLianKan::boomGame() {
+	if (remainBlocks == 0) {
+		return;
+	}
+	QSound::play("./Sounds/item.wav");
+	auto navigator = map.prompt();
+	auto lightnings = map.getDirections(navigator);
+	prev = nullptr;
+	for (auto item : scene->items()) {
+		auto *block = dynamic_cast<Block *>(item);
+		if (block == nullptr) continue;
+		if (block->x == navigator[0][1] && block->y == navigator[0][0]) {
+			if (prev == nullptr) {
+				prev = block;
+			}
+			else {
+				linking(block);
+			}
+		}
+		if (block->x == navigator[navigator.size() -1][1] && block->y == navigator[navigator.size() - 1][0]) {
+			if (prev == nullptr) {
+				prev = block;
+			}
+			else {
+				linking(block);
+			}
+		}
+	}
+}
 
 void LianLianKan::MirrorGame()
 {
 	QSound::play("./Sounds/item.wav");
-	prev = nullptr;
+	prev = nullptr; ban = nullptr; blind = nullptr;
 	scene->clear();
 	lightningSequence.clear();
 	auto mapVec = map.mirror();
@@ -39,7 +68,7 @@ void LianLianKan::MirrorGame()
 void LianLianKan::ObstacleGame()
 {
 	QSound::play("./Sounds/item.wav");
-	prev = nullptr;
+	prev = nullptr; ban = nullptr; blind = nullptr;
 	scene->clear();
 	lightningSequence.clear();
 	auto mapVec = map.obstacle();
@@ -49,7 +78,7 @@ void LianLianKan::ObstacleGame()
 void LianLianKan::HandGame()
 {
 	QSound::play("./Sounds/item.wav");
-	QGraphicsPixmapItem *ban = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/ban.png"));
+	ban = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/ban.png"));
 	ban->setOpacity(0.3);
 	ban->setPos(50, 0);
 	scene->addItem(ban);
@@ -64,7 +93,7 @@ void LianLianKan::HandGame()
 void LianLianKan::BlindGame()
 {
 	QSound::play("./Sounds/item.wav");
-	QGraphicsRectItem *blind = new QGraphicsRectItem(0, 150, 600, 385);
+	blind = new QGraphicsRectItem(0, 150, 600, 385);
 	blind->setBrush(QBrush(Qt::black));
 	blind->setOpacity(0.85);
 	scene->addItem(blind);
@@ -79,7 +108,7 @@ void LianLianKan::resortGame() {
 		return;
 	}
 	QSound::play("./Sounds/item.wav");
-	prev = nullptr;
+	prev = nullptr; ban = nullptr; blind = nullptr;
 	scene->clear();
 	lightningSequence.clear();
 	auto mapVec = map.rearrange();

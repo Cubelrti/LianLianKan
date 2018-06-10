@@ -33,6 +33,8 @@ private:
 	std::vector<QPixmap> boomPixmaps;
 	std::vector<QPixmap> fireworkPixmaps;
 	std::vector<QPixmap> blockPixmaps;
+	QGraphicsPixmapItem *ban;
+	QGraphicsRectItem *blind;
 	Block *prev = nullptr;
 	Map map;
 	void drawLightning(std::vector<std::vector<int>> seq, std::vector<int> lightningSeq);
@@ -64,6 +66,7 @@ private slots:
 	void versusGame();
 	void updateTimer();
 	void navigateGame();
+	void boomGame();
 	void pauseGame();
 	void resortGame();
 	void updateItems();

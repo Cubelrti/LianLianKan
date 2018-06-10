@@ -78,33 +78,6 @@ void LianLianKan::linking(Block * next) {
 			prev = next;
 			return;
 		}
-		if (next->block_type == 27) {
-			remainNavigators++;
-		}
-		if (next->block_type == 8) {
-			remainResorts++;
-		}
-		if (next->block_type == 25 && isNetwork) {
-			websocket.sendTextMessage("ITEM_MIRROR_" + QString::number(netId));
-		}
-		if (next->block_type == 29 && isNetwork) {
-			websocket.sendTextMessage("ITEM_TIME_" + QString::number(netId));
-		}
-		if (next->block_type == 28 && isNetwork) {
-			// websocket.sendTextMessage("ITEM_BOOM_" + QString::number(netId));
-		}
-		if (next->block_type == 43 && isNetwork) {
-			websocket.sendTextMessage("ITEM_OBSTACLE_" + QString::number(netId));
-		}
-		if (next->block_type == 41 && isNetwork) {
-			websocket.sendTextMessage("ITEM_HAND_" + QString::number(netId));
-		}
-		if (next->block_type == 40 && isNetwork) {
-			websocket.sendTextMessage("ITEM_BLIND_" + QString::number(netId));
-		}
-
-		//if(next->block_type == )
-		updateItems();
 		remainBlocks -= 2;
 		if (isNetwork) {
 			websocket.sendTextMessage("ACTION_" + QString::number(netId) + "_" + QString::number(remainBlocks));
@@ -120,7 +93,31 @@ void LianLianKan::linking(Block * next) {
 		}
 		drawBoom(prev, next);
 		drawLightning(directionVec, lightnings);
-
+		if (next->block_type == 27) {
+			remainNavigators++;
+		}
+		if (next->block_type == 8) {
+			remainResorts++;
+		}
+		if (next->block_type == 25 && isNetwork) {
+			websocket.sendTextMessage("ITEM_MIRROR_" + QString::number(netId));
+		}
+		if (next->block_type == 29 && isNetwork) {
+			websocket.sendTextMessage("ITEM_TIME_" + QString::number(netId));
+		}
+		if (next->block_type == 28 && isNetwork) {
+			boomGame();
+		}
+		if (next->block_type == 43 && isNetwork) {
+			websocket.sendTextMessage("ITEM_OBSTACLE_" + QString::number(netId));
+		}
+		if (next->block_type == 41 && isNetwork) {
+			websocket.sendTextMessage("ITEM_HAND_" + QString::number(netId));
+		}
+		if (next->block_type == 40 && isNetwork) {
+			websocket.sendTextMessage("ITEM_BLIND_" + QString::number(netId));
+		}
+		updateItems();
 		if (prev == next)
 		{
 			delete prev;
