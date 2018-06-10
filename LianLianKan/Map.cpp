@@ -95,7 +95,7 @@ vector<vector<int>> Map::makeMap(int order) {
 	map.clear();
 	vector<bool> flags;
 	vector<vector<int>> position;
-	vector<int> frequency(41, 0);
+	vector<int> frequency(45, 0);
 	srand((unsigned)time(NULL));
 
 	string filename = "./Maps/Map" + std::to_string(order) + ".txt";
@@ -143,14 +143,14 @@ vector<vector<int>> Map::makeMap(int order) {
 		flags[i] = true;
 		flags[j] = true;
 		tmp_len--;
-		int rand_element = 1 + (rand() % 40);
+		int rand_element = 1 + (rand() % 44);
 		while (1) {
 			if (frequency[rand_element] < 3) {
 				frequency[rand_element]++;
 				break;
 			}
 			else
-				rand_element = 1 + (rand() % 40);
+				rand_element = 1 + (rand() % 44);
 		}
 		map[position[i][0]][position[i][1]] = rand_element;
 		map[position[j][0]][position[j][1]] = rand_element;
@@ -347,7 +347,7 @@ vector<vector<int>> Map::connection(int x1, int y1, int x2, int y2, bool promptF
 
 vector<vector<int>> Map::rearrange() {
 	srand((unsigned)time(NULL));
-	vector<int> frequencies(41, 0);
+	vector<int> frequencies(45, 0);
 	vector<vector <int>> position;
 	vector<bool> flags;
 	for (int i = 0; i < HEIGHT; i++)
@@ -360,7 +360,7 @@ vector<vector<int>> Map::rearrange() {
 		}
 
 	int len = position.size();
-	for (int i = 1; i < 41; i++) {
+	for (int i = 1; i < 45; i++) {
 		while (frequencies[i]) {
 			int element1 = rand() % len;
 			while (flags[element1]) element1 = rand() % len;
@@ -419,7 +419,7 @@ vector<vector<int>> Map::obstacle()
 		while (flags[element2] && element2 == element1 &&
 			!around_block(position[element2][0], position[element2][1]))
 			element2 = rand() % len;
-		int rand_element = 1 + (rand() % 40);
+		int rand_element = 1 + (rand() % 44);
 		map[position[element1][0]][position[element1][1]] = rand_element;
 		map[position[element2][0]][position[element2][1]] = rand_element;
 		total--;
