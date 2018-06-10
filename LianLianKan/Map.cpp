@@ -478,11 +478,11 @@ vector<vector<int>> Map::obstacle()
 	int tmp_len = len;
 	while (total && tmp_len) {
 		int element1 = rand() % len;
-		while (blank_flags[element1] &&
+		while (blank_flags[element1] ||
 			!around_block(position[element1][0], position[element1][1]))
 			element1 = rand() % len;
 		int element2 = rand() % len;
-		while (blank_flags[element2] && element2 == element1 &&
+		while (blank_flags[element2] || element2 == element1 ||
 			!around_block(position[element2][0], position[element2][1]))
 			element2 = rand() % len;
 		int rand_element = 1 + (rand() % 44);
