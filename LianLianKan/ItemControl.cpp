@@ -67,9 +67,14 @@ void LianLianKan::ObstacleGame()
 void LianLianKan::HandGame()
 {
 	QSound::play("./Sounds/item.wav");
+	QGraphicsPixmapItem *ban = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/ban.png"));
+	ban->setPos(50, 0);
+	scene->addItem(ban);
 	isGameNow = false;
-	QTimer::singleShot(5000, this, [=] {
+	QTimer::singleShot(3000, this, [=] {
 		isGameNow = true;
+		if (ban == nullptr) return;
+		scene->removeItem(ban);
 	});
 }
 
