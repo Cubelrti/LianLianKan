@@ -417,7 +417,7 @@ vector<vector<int>> Map::obstacle()
 	vector<vector<int>> position;
 	vector<bool> props_flags(45, false);
 	vector<bool> blank_flags;
-	int total = 3;
+	int total = 6;
 	for (int i = 0; i < HEIGHT; i++)
 		for (int j = 0; j < WIDTH; j++)
 			if (!map[i][j]) {
@@ -436,7 +436,7 @@ vector<vector<int>> Map::obstacle()
 			!around_block(position[element2][0], position[element2][1]))
 			element2 = rand() % len;
 		int rand_element = 1 + (rand() % 44);
-		while (in_props(rand_element) && props_flags[rand_element])
+		while (in_props(rand_element) || props_flags[rand_element])
 			rand_element = 1 + (rand() % 44);
 		props_flags[rand_element] = true;
 		map[position[element1][0]][position[element1][1]] = rand_element;
