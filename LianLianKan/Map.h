@@ -27,6 +27,7 @@ public:
 	vector<int> getDirections(vector<vector<int>> route);
 
 private:
+	bool in_props(int pos);
 	bool around_block(int x, int y);
 	bool isLineLinkable(int x1, int y1, int x2, int y2);
 	vector<vector<int>> map;
