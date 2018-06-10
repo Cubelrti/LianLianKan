@@ -73,6 +73,7 @@ void LianLianKan::ObstacleGame()
 	lightningSequence.clear();
 	auto mapVec = map.obstacle();
 	drawBlocks(mapVec);
+	ui.remainBlock->setText(QString::number(remainBlocks));
 }
 
 void LianLianKan::HandGame()
