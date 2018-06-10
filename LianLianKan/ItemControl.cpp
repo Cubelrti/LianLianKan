@@ -50,6 +50,7 @@ void LianLianKan::HandGame()
 {
 	QSound::play("./Sounds/item.wav");
 	QGraphicsPixmapItem *ban = new QGraphicsPixmapItem(QPixmap(":/LianLianKan/Images/ban.png"));
+	ban->setOpacity(0.3);
 	ban->setPos(50, 0);
 	scene->addItem(ban);
 	isGameNow = false;
