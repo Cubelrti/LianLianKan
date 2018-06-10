@@ -23,9 +23,11 @@ public:
 	vector<vector<int>> mirror();
 	vector<vector<int>> rearrange();
 	vector<vector<int>> prompt();
+	vector<vector<int>> obstacle();
 	vector<int> getDirections(vector<vector<int>> route);
 
 private:
+	bool around_block(int x, int y);
 	bool isLineLinkable(int x1, int y1, int x2, int y2);
 	vector<vector<int>> map;
 	bool full_true(vector<bool> flags);
