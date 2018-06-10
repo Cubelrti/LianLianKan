@@ -5,6 +5,8 @@
 
 using namespace std;
 
+vector<int> props = { 28, 9, 26, 30 ,29, 44 ,42 ,41 };
+
 Map::Map() {
 
 }
@@ -61,6 +63,14 @@ bool Map::full_true(vector<bool> flags) {
 	for (auto flag : flags)
 		if (!flag) return false;
 	return true;
+}
+
+bool Map::in_props(int pos)
+{
+	for (int i = 0; i < props.size(); i++)
+		if (pos == props[i])
+			return true;
+	return false;
 }
 
 bool Map::around_block(int x, int y)
@@ -144,8 +154,13 @@ vector<vector<int>> Map::makeMap(int order) {
 		flags[j] = true;
 		tmp_len--;
 		int rand_element = 1 + (rand() % 44);
+		int maxProps;
 		while (1) {
-			if (frequency[rand_element] < 3) {
+			if (in_props(rand_element))
+				maxProps = 1;
+			else
+				maxProps = 3;
+			if (frequency[rand_element] < maxProps) {
 				frequency[rand_element]++;
 				break;
 			}
@@ -420,6 +435,8 @@ vector<vector<int>> Map::obstacle()
 			!around_block(position[element2][0], position[element2][1]))
 			element2 = rand() % len;
 		int rand_element = 1 + (rand() % 44);
+		while(in_props(rand_element))
+			rand_element = 1 + (rand() % 44);
 		map[position[element1][0]][position[element1][1]] = rand_element;
 		map[position[element2][0]][position[element2][1]] = rand_element;
 		total--;
