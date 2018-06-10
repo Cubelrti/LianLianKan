@@ -33,16 +33,7 @@ void LianLianKan::MirrorGame()
 	scene->clear();
 	lightningSequence.clear();
 	auto mapVec = map.mirror();
-	for (int i = 17; i >= 0; i--)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			if (mapVec[j][i] == 0) continue;
-			int block_type = mapVec[j][i] - 1;
-			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
-			scene->addItem(_block);
-		}
-	}
+	drawBlocks(mapVec);
 }
 
 void LianLianKan::ObstacleGame()
@@ -52,16 +43,7 @@ void LianLianKan::ObstacleGame()
 	scene->clear();
 	lightningSequence.clear();
 	auto mapVec = map.obstacle();
-	for (int i = 17; i >= 0; i--)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			if (mapVec[j][i] == 0) continue;
-			int block_type = mapVec[j][i] - 1;
-			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
-			scene->addItem(_block);
-		}
-	}
+	drawBlocks(mapVec);
 }
 
 void LianLianKan::HandGame()
@@ -100,16 +82,7 @@ void LianLianKan::resortGame() {
 	scene->clear();
 	lightningSequence.clear();
 	auto mapVec = map.rearrange();
-	for (int i = 17; i >= 0; i--)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			if (mapVec[j][i] == 0) continue;
-			int block_type = mapVec[j][i] - 1;
-			Block *_block = new Block(this, block_type, i, j, blockPixmaps[block_type]);
-			scene->addItem(_block);
-		}
-	}
+	drawBlocks(mapVec);
 	remainResorts--;
 	updateItems();
 }
