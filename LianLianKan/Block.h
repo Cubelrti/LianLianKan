@@ -4,7 +4,7 @@
 #include <QGraphicsItem>
 #include <QPainter>
 
-const QString images[10] = {
+const QString images[11] = {
 	":/LianLianKan/Images/Elem1.png",
 	":/LianLianKan/Images/Elem2.png",
 	":/LianLianKan/Images/Elem3.png",
@@ -14,7 +14,8 @@ const QString images[10] = {
 	":/LianLianKan/Images/Elem7.png",
 	":/LianLianKan/Images/Elem8.png",
 	":/LianLianKan/Images/Elem9.png",
-	":/LianLianKan/Images/Elem10.png"
+	":/LianLianKan/Images/Elem10.png",
+	":/LianLianKan/Images/Elem11.png"
 };
 const QRect rects[4] = {
 	QRect(0, 0, 35, 39),
