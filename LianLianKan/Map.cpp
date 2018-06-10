@@ -63,6 +63,16 @@ bool Map::full_true(vector<bool> flags) {
 	return true;
 }
 
+bool Map::around_block(int x, int y)
+{
+	if (map[x + 1][y] || map[x - 1][y] || map[x][y + 1] || map[x][y - 1])
+		return true;
+	if (map[x + 1][y + 1] || map[x - 1][y - 1] || map[x + 1][y - 1] ||
+		map[x - 1][y + 1])
+		return true;
+	return false;
+}
+
 bool Map::isLineLinkable(int x1, int y1, int x2, int y2) {
 	if (x1 == x2) {
 		if (y1 > y2) std::swap(y1, y2);
@@ -384,6 +394,38 @@ vector<vector<int>> Map::prompt() {
 			}
 	}
 	return route;
+}
+
+vector<vector<int>> Map::obstacle()
+{
+	srand((unsigned)time(NULL));
+	vector<vector<int>> position;
+	vector<bool> flags;
+	int total = 3;
+	for (int i = 0; i < HEIGHT; i++)
+		for (int j = 0; j < WIDTH; j++)
+			if (!map[i][j]) {
+				position.push_back({ i, j });
+				flags.push_back(false);
+			}
+	int len = position.size();
+	int tmp_len = len;
+	while (total && tmp_len) {
+		int element1 = rand() % len;
+		while (flags[element1] &&
+			!around_block(position[element1][0], position[element1][1]))
+			element1 = rand() % len;
+		int element2 = rand() % len;
+		while (flags[element2] && element2 == element1 &&
+			!around_block(position[element2][0], position[element2][1]))
+			element2 = rand() % len;
+		int rand_element = 1 + (rand() % 40);
+		map[position[element1][0]][position[element1][1]] = rand_element;
+		map[position[element2][0]][position[element2][1]] = rand_element;
+		total--;
+		tmp_len -= 2;
+	}
+	return map;
 }
 
 int Map::find_right_number(int alpha, int beta, int x, int y) {
