@@ -62,6 +62,7 @@ private slots:
 	void HandGame();
 	void BlindGame();
 	void MirrorGame();
+	void ClearScene();
 	void ObstacleGame();
 	void versusGame();
 	void updateTimer();

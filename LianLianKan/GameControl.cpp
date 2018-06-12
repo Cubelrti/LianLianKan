@@ -43,7 +43,7 @@ void LianLianKan::startGame() {
 	isGameNow = true;
 	auto mapVec = map.makeMap(difficulty);
 	QSound::play("./Sounds/Start.wav");
-	prev = nullptr; ban = nullptr; blind = nullptr;
+	ClearScene();
 	remainNavigators = 3;
 	remainResorts = 2;
 	updateItems();

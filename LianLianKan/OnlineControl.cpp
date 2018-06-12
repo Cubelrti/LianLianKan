@@ -9,11 +9,10 @@ void LianLianKan::updateVersus(QString message) {
 		isGameNow = true;
 		auto mapVec = map.makeMap(tokens[2].toInt());
 		QSound::play("./Sounds/Start.wav");
-		prev = nullptr; ban = nullptr; blind = nullptr;
 		remainNavigators = 3;
 		remainResorts = 2;
 		updateItems();
-		scene->clear();
+		ClearScene();
 		lightningSequence.clear();
 		drawBlocks(mapVec);
 		ui.timeBar->setValue(0);

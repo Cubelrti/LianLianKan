@@ -58,18 +58,22 @@ void LianLianKan::boomGame() {
 void LianLianKan::MirrorGame()
 {
 	QSound::play("./Sounds/item.wav");
-	prev = nullptr; ban = nullptr; blind = nullptr;
-	scene->clear();
+	ClearScene();
 	lightningSequence.clear();
 	auto mapVec = map.mirror();
 	drawBlocks(mapVec);
 }
 
+void LianLianKan::ClearScene()
+{
+	prev = nullptr; ban = nullptr; blind = nullptr;
+	scene->clear();
+}
+
 void LianLianKan::ObstacleGame()
 {
 	QSound::play("./Sounds/item.wav");
-	prev = nullptr; ban = nullptr; blind = nullptr;
-	scene->clear();
+	ClearScene();
 	lightningSequence.clear();
 	auto mapVec = map.obstacle();
 	drawBlocks(mapVec);
@@ -109,8 +113,7 @@ void LianLianKan::resortGame() {
 		return;
 	}
 	QSound::play("./Sounds/item.wav");
-	prev = nullptr; ban = nullptr; blind = nullptr;
-	scene->clear();
+	ClearScene();
 	lightningSequence.clear();
 	auto mapVec = map.rearrange();
 	drawBlocks(mapVec);
