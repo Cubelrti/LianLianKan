@@ -75,6 +75,7 @@ void LianLianKan::versusGame() {
 		ui.statusBar->showMessage("Now matching opponent...");
 	}
 	else {
-		ui.statusBar->showMessage("Connection failed.");
+		ui.statusBar->showMessage("Connection failed. Retrying...");
+		websocket.open(QUrl("ws://47.95.3.113:8888"));
 	}
 }
