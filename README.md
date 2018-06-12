@@ -20,7 +20,7 @@ LianLianKan is a classic paring game, offering graphic effects, simple controls 
 
 - 对战功能，使用QtWebsocket简单的实现了一个对战功能。服务器暂挂载于阿里云。
 
-# Contributer
+# Contributors
 
 @Cubelrti UI 实现和游戏状态实现。
 
